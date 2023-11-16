@@ -1,29 +1,29 @@
 openapi: 3.0.3
 info:
-  title: User Management Service
-  description: API for User Management Service
+  title: Car Listing Service
+  description: API for Car Listing Service
   version: 1.0.0
 paths:
-  /api/v1/users:
+  /api/v1/addCar:
     post:
       tags:
-        - User Management
-      summary: Register a new user
-      description: Registers a new user
-      operationId: RegisterUser
+        - Car Listing
+      summary: Add a new car listing
+      description: Adds a new car listing to the platform
+      operationId: AddCarListing
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterUserCommand'
+              $ref: '#/components/schemas/AddCarListingCommand'
       responses:
         '201':
-          description: User successfully registered
+          description: Car listing added successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiUser'
+                $ref: '#/components/schemas/ApiCar'
         '500':
           description: Internal Server Error
           content:
@@ -31,29 +31,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 
-  /api/v1/users/{userId}:
+  /api/v1/cars/{carId}:
     get:
       tags:
-        - User Management
-      summary: Get user by ID
-      description: Retrieve user details by user ID
-      operationId: GetUserById
+        - Car Listing
+      summary: Get car listing by ID
+      description: Retrieve car details by car ID
+      operationId: GetCarById
       parameters:
         - in: path
-          name: userId
+          name: carId
           schema:
             type: integer
           required: true
-          description: ID of the user to retrieve
+          description: ID of the car listing to retrieve
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiUser'
+                $ref: '#/components/schemas/ApiCar'
         '404':
-          description: User not found
+          description: Car listing not found
           content:
             application/json:
               schema:
@@ -61,32 +61,33 @@ paths:
 
 components:
   schemas:
-    RegisterUserCommand:
+    AddCarListingCommand:
       type: object
       properties:
-        username:
+        ownerName:
           type: string
-        email:
+        carModel:
           type: string
-        password:
-          type: string
-          format: password
-    ApiUser:
-      type: object
-      properties:
-        userId:
+        year:
           type: integer
-        username:
+    ApiCar:
+      type: object
+      properties:
+        carId:
+          type: integer
+        ownerName:
           type: string
-        email:
+        carModel:
           type: string
+        year:
+          type: integer
     ApiError:
       type: object
       properties:
         code:
           type: string
           description: 'Functional code specifying the error'
-          example: '1001'
+          example: '2001'
         message:
           type: string
           description: 'Brief explanation about the error'
