@@ -10,13 +10,13 @@ paths:
         - Reservation
       summary: Create a new reservation
       description: Creates a reservation for a specific car and timeslot
-      operationId: CreateReservation
+      operationId: createReservation
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateReservationCommand'
+              $ref: '#/components/schemas/ReservationCommand'
       responses:
         '201':
           description: Reservation created successfully
@@ -58,15 +58,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+    patch:
+      summary: Confirm or decline a reservation
+      description: Allows a car owner to confirm or decline a reservation.
+      operationId: updateAvailable
+      parameters:
+        - in: path
+          name: reservationId
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the reservation
+      responses:
+        '200':
+          description: Reservation confirmation status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiReservation'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: Reservation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      summary: Delete a reservation
+      description: Deletes a reservation with the specified ID.
+      operationId: deleteReservation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the reservation to delete.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiReservation'
+        '404':
+          description: Reservation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 
 components:
   schemas:
-    CreateReservationCommand:
+    ReservationCommand:
       type: object
       properties:
+        userId:
+          type: integer
         carId:
           type: integer
-        timeslot:
+        startTime:
+          type: string
+          format: date-time
+        endTime:
           type: string
           format: date-time
     ApiReservation:
@@ -74,11 +139,22 @@ components:
       properties:
         reservationId:
           type: integer
+        userId:
+          type: integer
         carId:
           type: integer
-        timeslot:
+        startTime:
           type: string
           format: date-time
+        endTime:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - PENDING
+            - CONFIRMED
+            - DECLINED
     ApiError:
       type: object
       properties:

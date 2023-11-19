@@ -4,34 +4,6 @@ info:
   description: API for Billing Service
   version: 1.0.0
 paths:
-  /api/v1/bills/user/{userId}:
-    get:
-      tags:
-        - Billing
-      summary: Get user bill by ID
-      description: Retrieve the bill for a specific user by their ID
-      operationId: GetUserBillById
-      parameters:
-        - in: query
-          name: userId
-          schema:
-            type: integer
-          required: true
-          description: ID of the user to retrieve the bill
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserBill'
-        '404':
-          description: Bill not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-
   /api/v1/bills/{id}:
     get:
       tags:
@@ -52,17 +24,44 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserBill'
+                $ref: '#/components/schemas/Bill'
         '404':
           description: Bill not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+    post:
+      summary: Generate a bill for a reservation
+      description: Creates a bill for a specific car reservation after it has passed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillCommand'
+      responses:
+        '201':
+          description: Bill successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bill'
+        '400':
+          description: Invalid reservation data
+        '500':
+          description: Internal server error
 
 components:
   schemas:
-    UserBill:
+    BillCommand:
+      type: object
+      properties:
+        reservationId:
+          type: string
+        userId:
+          type: string
+    Bill:
       type: object
       properties:
         id:
@@ -75,14 +74,15 @@ components:
           type: integer
         amount:
           type: number
-        details:
+        issuedDate:
           type: string
-        date:
+          format: date-time
+        dueDate:
           type: string
           format: date-time
         status:
           type: string
-          enum: [PAID, UNPAID]
+          enum: [PAID, UNPAID, OVERDUE]
     ApiError:
       type: object
       properties:

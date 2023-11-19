@@ -10,7 +10,7 @@ paths:
         - User Management
       summary: Register a new user
       description: Registers a new user
-      operationId: RegisterUser
+      operationId: registerUser
       requestBody:
         required: true
         content:
@@ -24,6 +24,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiUser'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
         '500':
           description: Internal Server Error
           content:
@@ -37,7 +49,7 @@ paths:
         - User Management
       summary: Get user by ID
       description: Retrieve user details by user ID
-      operationId: GetUserById
+      operationId: getUserById
       parameters:
         - in: path
           name: userId
@@ -68,6 +80,7 @@ components:
           type: string
         email:
           type: string
+          format: email
         password:
           type: string
           format: password
@@ -80,6 +93,7 @@ components:
           type: string
         email:
           type: string
+          format: email
     ApiError:
       type: object
       properties:

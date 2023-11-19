@@ -4,19 +4,19 @@ info:
   description: API for Car Listing Service
   version: 1.0.0
 paths:
-  /api/v1/addCar:
+  /api/v1/cars:
     post:
       tags:
         - Car Listing
       summary: Add a new car listing
       description: Adds a new car listing to the platform
-      operationId: AddCarListing
+      operationId: newCarListing
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddCarListingCommand'
+              $ref: '#/components/schemas/CarListingCommand'
       responses:
         '201':
           description: Car listing added successfully
@@ -24,6 +24,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiCar'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
         '500':
           description: Internal Server Error
           content:
@@ -58,29 +64,127 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+    put:
+      description: Modify the details of a specific car listing
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarListingCommand'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCar'
+        '404':
+          description: Car listing not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      description: Remove a car listing from the platform
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Car listing removed
+        '404':
+          description: Car listing not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/v1/cars/search:
+    get:
+      summary: Search for a suitable car
+      description: Allows a user to search for a car based on their needs such as location, type, and price.
+      parameters:
+        - in: query
+          name: location
+          schema:
+            type: string
+          description: Location to search for cars
+        - in: query
+          name: carModel
+          schema:
+            type: string
+          description: Model of car
+        - in: query
+          name: price
+          schema:
+            type: number
+          description: Maximum price for the car
+      responses:
+        '200':
+          description: A list of cars that match the search criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiCar'
+        '400':
+          description: Invalid search criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 
 components:
   schemas:
-    AddCarListingCommand:
+    CarListingCommand:
       type: object
       properties:
-        ownerName:
-          type: string
+        ownerId:
+          type: integer
         carModel:
           type: string
         year:
           type: integer
+        location:
+          type: string
+        price:
+          type: number
+        available:
+          type: boolean
+          default: true
     ApiCar:
       type: object
       properties:
         carId:
           type: integer
-        ownerName:
-          type: string
+        ownerId:
+          type: integer
         carModel:
           type: string
         year:
           type: integer
+        location:
+          type: string
+        price:
+          type: number
+        available:
+          type: boolean
     ApiError:
       type: object
       properties:
