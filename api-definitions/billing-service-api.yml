@@ -24,7 +24,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bill'
+                $ref: '#/components/schemas/ApiBill'
         '404':
           description: Bill not found
           content:
@@ -46,7 +46,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bill'
+                $ref: '#/components/schemas/ApiBill'
         '400':
           description: Invalid reservation data
         '500':
@@ -61,7 +61,7 @@ components:
           type: string
         userId:
           type: string
-    Bill:
+    ApiBill:
       type: object
       properties:
         id:
