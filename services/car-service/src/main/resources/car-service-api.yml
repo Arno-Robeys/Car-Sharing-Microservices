@@ -1,0 +1,197 @@
+openapi: 3.0.3
+info:
+  title: Car Listing Service
+  description: API for Car Listing Service
+  version: 1.0.0
+paths:
+  /api/v1/cars:
+    post:
+      tags:
+        - Car Listing
+      summary: Add a new car listing
+      description: Adds a new car listing to the platform
+      operationId: newCarListing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarListingCommand'
+      responses:
+        '201':
+          description: Car listing added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCar'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/v1/cars/{carId}:
+    get:
+      tags:
+        - Car Listing
+      summary: Get car listing by ID
+      description: Retrieve car details by car ID
+      operationId: GetCarById
+      parameters:
+        - in: path
+          name: carId
+          schema:
+            type: integer
+          required: true
+          description: ID of the car listing to retrieve
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCar'
+        '404':
+          description: Car listing not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    put:
+      description: Modify the details of a specific car listing
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarListingCommand'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCar'
+        '404':
+          description: Car listing not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      description: Remove a car listing from the platform
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Car listing removed
+        '404':
+          description: Car listing not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/v1/cars/search:
+    get:
+      summary: Search for a suitable car
+      description: Allows a user to search for a car based on their needs such as location, type, and price.
+      parameters:
+        - in: query
+          name: location
+          schema:
+            type: string
+          description: Location to search for cars
+        - in: query
+          name: carModel
+          schema:
+            type: string
+          description: Model of car
+        - in: query
+          name: price
+          schema:
+            type: number
+          description: Maximum price for the car
+      responses:
+        '200':
+          description: A list of cars that match the search criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiCar'
+        '400':
+          description: Invalid search criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+components:
+  schemas:
+    CarListingCommand:
+      type: object
+      properties:
+        ownerId:
+          type: integer
+        carModel:
+          type: string
+        year:
+          type: integer
+        location:
+          type: string
+        price:
+          type: number
+        available:
+          type: boolean
+          default: true
+    ApiCar:
+      type: object
+      properties:
+        carId:
+          type: integer
+        ownerId:
+          type: integer
+        carModel:
+          type: string
+        year:
+          type: integer
+        location:
+          type: string
+        price:
+          type: number
+        available:
+          type: boolean
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 'Functional code specifying the error'
+          example: '2001'
+        message:
+          type: string
+          description: 'Brief explanation about the error'

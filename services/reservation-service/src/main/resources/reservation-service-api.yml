@@ -1,0 +1,167 @@
+openapi: 3.0.3
+info:
+  title: Reservation Service
+  description: API for Reservation Service
+  version: 1.0.0
+paths:
+  /api/v1/reservations:
+    post:
+      tags:
+        - Reservation
+      summary: Create a new reservation
+      description: Creates a reservation for a specific car and timeslot
+      operationId: createReservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationCommand'
+      responses:
+        '201':
+          description: Reservation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiReservation'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/v1/reservations/{reservationId}:
+    get:
+      tags:
+        - Reservation
+      summary: Get reservation by ID
+      description: Retrieve reservation details by reservation ID
+      operationId: GetReservationById
+      parameters:
+        - in: path
+          name: reservationId
+          schema:
+            type: integer
+          required: true
+          description: ID of the reservation to retrieve
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiReservation'
+        '404':
+          description: Reservation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      summary: Confirm or decline a reservation
+      description: Allows a car owner to confirm or decline a reservation.
+      operationId: updateAvailable
+      parameters:
+        - in: path
+          name: reservationId
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the reservation
+      responses:
+        '200':
+          description: Reservation confirmation status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiReservation'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: Reservation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      summary: Delete a reservation
+      description: Deletes a reservation with the specified ID.
+      operationId: deleteReservation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the reservation to delete.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiReservation'
+        '404':
+          description: Reservation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+components:
+  schemas:
+    ReservationCommand:
+      type: object
+      properties:
+        userId:
+          type: integer
+        carId:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+    ApiReservation:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        userId:
+          type: integer
+        carId:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - PENDING
+            - CONFIRMED
+            - DECLINED
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 'Functional code specifying the error'
+          example: '3001'
+        message:
+          type: string
+          description: 'Brief explanation about the error'
