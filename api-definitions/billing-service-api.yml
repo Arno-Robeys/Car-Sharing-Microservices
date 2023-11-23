@@ -34,6 +34,14 @@ paths:
     post:
       summary: Generate a bill for a reservation
       description: Creates a bill for a specific car reservation after it has passed.
+      operationId: UpdateBillById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the bill to retrieve
       requestBody:
         required: true
         content:

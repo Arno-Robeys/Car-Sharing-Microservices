@@ -66,6 +66,7 @@ paths:
                 $ref: '#/components/schemas/ApiError'
     put:
       description: Modify the details of a specific car listing
+      operationId: UpdateCarById
       parameters:
         - in: path
           name: carId
@@ -93,6 +94,7 @@ paths:
                 $ref: '#/components/schemas/ApiError'
     delete:
       description: Remove a car listing from the platform
+      operationId: DeleteCarById
       parameters:
         - in: path
           name: carId
@@ -112,6 +114,7 @@ paths:
     get:
       summary: Search for a suitable car
       description: Allows a user to search for a car based on their needs such as location, type, and price.
+      operationId: SearchCar
       parameters:
         - in: query
           name: location

@@ -24,6 +24,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
@@ -40,27 +44,7 @@
             <artifactId>spring-rabbit-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Temporary fix for compile errors - Nino
-        https://stackoverflow.com/questions/67283934/spring-java-package-javax-validation-constraints-does-not-exist
-        https://stackoverflow.com/questions/76415258/caused-by-java-lang-classnotfoundexception-jakarta-servlet-servletrequest
-        https://stackoverflow.com/questions/22589302/where-is-javax-annotation
-        -->
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.annotation</groupId>
-            <artifactId>jakarta.annotation-api</artifactId>
-            <version>1.3.5</version>
-        </dependency>
+
         <!-- Dependencies needed for generated classes -->
         <dependency>
             <groupId>org.openapitools</groupId>
@@ -82,14 +66,6 @@
             <artifactId>spotbugs-annotations</artifactId>
             <version>4.7.3</version>
         </dependency>
-        <dependency>
-            <groupId>jakarta.transaction</groupId>
-            <artifactId>jakarta.transaction-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -107,22 +83,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <image>
-                        <builder>paketobuildpacks/builder-jammy-base:latest</builder>
-                    </image>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>5.3.0</version>
+                <version>6.4.0</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <configHelp>false</configHelp>
                             <inputSpec>${project.basedir}/src/main/resources/reservation-service-api.yml</inputSpec>
                             <generatorName>spring</generatorName>
                             <apiPackage>be.ucll.reservationservice.api</apiPackage>
@@ -130,6 +102,7 @@
                             <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
                             <generateAliasAsModel>true</generateAliasAsModel>
                             <configOptions>
+                                <useJakartaEe>true</useJakartaEe>
                                 <delegatePattern>true</delegatePattern>
                                 <useTags>true</useTags>
                             </configOptions>
