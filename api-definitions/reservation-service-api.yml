@@ -99,7 +99,7 @@ paths:
       description: Deletes a reservation with the specified ID.
       operationId: deleteReservation
       parameters:
-        - name: id
+        - name: reservationId
           in: path
           required: true
           description: The ID of the reservation to delete.
