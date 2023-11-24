@@ -1,22 +1,42 @@
 package be.ucll.reservationservice.domain;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    private Integer userId;
+    private Integer carId;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
+    public Reservation(
+            Integer userId,
+            Integer carId,
+            LocalDateTime startDate,
+            LocalDateTime endDate
+    ) {
+        this.userId = userId;
+        this.carId = carId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = ReservationStatus.REGISTERED;
+    }
+
     public Reservation() {
-        this.status = ReservationStatus.RESERVING_CAR;
+
     }
 
     public Integer getId() {
         return id;
+    }
+    public Integer getCarId() {
+        return carId;
     }
     /*
         Happy Flow:

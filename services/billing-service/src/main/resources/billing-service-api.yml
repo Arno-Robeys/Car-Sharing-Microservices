@@ -72,7 +72,7 @@ components:
     ApiBill:
       type: object
       properties:
-        id:
+        billId:
           type: integer
         userId:
           type: integer
