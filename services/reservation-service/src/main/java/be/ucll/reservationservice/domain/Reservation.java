@@ -1,7 +1,6 @@
 package be.ucll.reservationservice.domain;
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 public class Reservation {
@@ -10,16 +9,16 @@ public class Reservation {
     private Integer id;
     private Integer userId;
     private Integer carId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private OffsetDateTime startDate;
+    private OffsetDateTime endDate;
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
     public Reservation(
             Integer userId,
             Integer carId,
-            LocalDateTime startDate,
-            LocalDateTime endDate
+            OffsetDateTime startDate,
+            OffsetDateTime endDate
     ) {
         this.userId = userId;
         this.carId = carId;
@@ -37,6 +36,15 @@ public class Reservation {
     }
     public Integer getCarId() {
         return carId;
+    }
+    public Integer getUserId() {
+        return userId;
+    }
+    public OffsetDateTime getStartDate() {
+        return startDate;
+    }
+    public OffsetDateTime getEndDate() {
+        return endDate;
     }
     /*
         Happy Flow:
@@ -72,7 +80,7 @@ public class Reservation {
         BILLING_USER_FAILED,
         NOTIFYING_USER_FAILED,
      */
-    public void noCarAvailable() {
+    public void carNotListed() {
         this.status = ReservationStatus.NO_CAR;
     }
     public void doubleBooking() {
