@@ -1,0 +1,103 @@
+openapi: 3.0.3
+info:
+  title: Billing Service API
+  description: API for Billing Service
+  version: 1.0.0
+paths:
+  /api/v1/bills/{id}:
+    get:
+      tags:
+        - Billing
+      summary: Get bill by ID
+      description: Retrieve bill details by bill ID
+      operationId: GetBillById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the bill to retrieve
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBill'
+        '404':
+          description: Bill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      summary: Generate a bill for a reservation
+      description: Creates a bill for a specific car reservation after it has passed.
+      operationId: UpdateBillById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the bill to retrieve
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillCommand'
+      responses:
+        '201':
+          description: Bill successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBill'
+        '400':
+          description: Invalid reservation data
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    BillCommand:
+      type: object
+      properties:
+        reservationId:
+          type: string
+        userId:
+          type: string
+    ApiBill:
+      type: object
+      properties:
+        billId:
+          type: integer
+        userId:
+          type: integer
+        carId:
+          type: integer
+        reservationId:
+          type: integer
+        amount:
+          type: number
+        issuedDate:
+          type: string
+          format: date-time
+        dueDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [PAID, UNPAID, OVERDUE]
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 'Functional code specifying the error'
+          example: '4001'
+        message:
+          type: string
+          description: 'Brief explanation about the error'

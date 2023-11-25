@@ -12,7 +12,7 @@ public class ReservationRequestSaga {
         this.repository = repository;
         this.eventSender = eventSender;
     }
-    public void executeSaga(Reservation reservation) {
+    /*public void executeSaga(Reservation reservation) {
         reservation.reservingCar();
         eventSender.sendReservingCarCommand(reservation.getId(), reservation.getCarId(), reservation.getStartDate(), reservation.getEndDate());
     }
