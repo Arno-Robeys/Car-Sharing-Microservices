@@ -73,6 +73,22 @@ paths:
 
 components:
   schemas:
+    NotifyingUserCommand:
+      type: object
+      properties:
+        userId:
+          type: integer
+        message:
+          type: string
+    NotifiedUserEvent:
+      type: object
+      properties:
+        userId:
+          type: integer
+        message:
+          type: string
+        notifyingUserFailed:
+          type: boolean
     RegisterUserCommand:
       type: object
       properties:

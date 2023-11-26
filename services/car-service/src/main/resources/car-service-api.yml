@@ -155,6 +155,19 @@ paths:
 
 components:
   schemas:
+    ReservedCarEvent:
+      type: object
+      properties:
+        carId:
+          type: integer
+        ownerId:
+          type: integer
+        available:
+          type: boolean
+        carNotListed:
+          type: boolean
+        isDoubleBooking:
+          type: boolean
     CarListingCommand:
       type: object
       properties:

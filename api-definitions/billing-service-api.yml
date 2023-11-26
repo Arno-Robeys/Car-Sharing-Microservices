@@ -62,6 +62,26 @@ paths:
 
 components:
   schemas:
+    ReverseBillingCommand:
+      type: object
+      properties:
+        billId:
+          type: integer
+        userId:
+          type: integer
+        reservationId:
+          type: integer
+    BilledUserEvent:
+      type: object
+      properties:
+        billId:
+          type: integer
+        userId:
+          type: integer
+        reservationId:
+          type: integer
+        billingUserFailed:
+          type: boolean
     BillCommand:
       type: object
       properties:
@@ -69,6 +89,11 @@ components:
           type: string
         userId:
           type: string
+        dueDate:
+          type: string
+          format: date-time
+        amount:
+          type: number
     ApiBill:
       type: object
       properties:

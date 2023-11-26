@@ -121,6 +121,39 @@ paths:
 
 components:
   schemas:
+    FinalisingReservationCommand:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        userId:
+          type: integer
+        carId:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+    ConfirmingReservationCommand:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        ownerDeclines:
+          type: boolean
+    ConfirmedReservationEvent:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        userId:
+          type: integer
+        carId:
+          type: integer
+        ownerDeclines:
+          type: boolean
     ReservationCommand:
       type: object
       properties:
