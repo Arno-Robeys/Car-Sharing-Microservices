@@ -34,7 +34,7 @@ public class RabbitMqMessageSender {
         command.carId(carId);
         command.startTime(startTime);
         command.endTime(endTime);
-        sendToQueue("q.car-service.reserving-car", command);
+        sendToQueue("q.reservation-service.reserving-car", command);
     }
 
     public void sendConfirmingReservationCommand(Integer reservationId) {

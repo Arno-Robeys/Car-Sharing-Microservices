@@ -38,9 +38,11 @@ public class ReservationService {
         }
     }
     public Reservation reserveCar(Integer userId, Integer carId, OffsetDateTime startDate, OffsetDateTime endDate) {
-        List<Reservation> reservation = repository.getReservationsForCarOverlapping(carId, startDate, endDate);
-        if (!reservation.isEmpty()) {
-            throw new IllegalArgumentException("Car is already reserved in this period");
+        List<Reservation> reservations = repository.getReservationsForCarOverlapping(carId, startDate, endDate);
+        if (!reservations.isEmpty()) {
+            Reservation reservation = new Reservation();
+            reservation.doubleBooking();
+            return reservation;
         } else {
             return repository.save(new Reservation(userId,carId,startDate, endDate));
         }

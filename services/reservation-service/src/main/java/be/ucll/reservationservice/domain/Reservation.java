@@ -31,6 +31,9 @@ public class Reservation {
         this.carId = carId;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.billAmount = BigDecimal.ZERO;
+        this.billDueDate = OffsetDateTime.now().plusDays(30);
+        this.notifyingUserMessage = "notifyingUserMessage";
         this.status = ReservationStatus.REGISTERED;
     }
 

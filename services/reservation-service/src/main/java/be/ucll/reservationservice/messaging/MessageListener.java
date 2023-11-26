@@ -7,6 +7,7 @@ import be.ucll.reservationservice.client.user.api.model.NotifiedUserEvent;
 import be.ucll.reservationservice.domain.Reservation;
 import be.ucll.reservationservice.domain.ReservationRequestSaga;
 import be.ucll.reservationservice.domain.ReservationService;
+import be.ucll.reservationservice.domain.ReservationStatus;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +62,10 @@ public class MessageListener {
         Reservation reservation = reservationService.reserveCar(command.getUserId(), command.getCarId(), command.getStartTime(), command.getEndTime());
         ReservedCarEvent event = new ReservedCarEvent();
         event.reservationId(reservation.getId());
+        event.carId(reservation.getCarId());
+        event.ownerId(reservation.getUserId());
+        event.carNotListed(reservation.getStatus() == ReservationStatus.NO_CAR);
+        event.isDoubleBooking(reservation.getStatus() == ReservationStatus.DOUBLE_BOOKING);
         LOGGER.info("Sending event: " + event);
         this.rabbitTemplate.convertAndSend("x.reserved-car", "", event);
     }

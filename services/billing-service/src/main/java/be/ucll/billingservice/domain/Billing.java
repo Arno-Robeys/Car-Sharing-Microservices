@@ -5,7 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 @Entity
 public class Billing {
@@ -13,11 +14,10 @@ public class Billing {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private Integer userId;
-    private Integer carId;
     private Integer reservationId;
-    private Double amount;
-    private LocalDateTime issuedDate;
-    private LocalDateTime dueDate;
+    private BigDecimal amount;
+    private OffsetDateTime issuedDate;
+    private OffsetDateTime dueDate;
     /*
      status:
           type: string
@@ -27,15 +27,13 @@ public class Billing {
 
     public Billing(
             Integer userId,
-            Integer carId,
             Integer reservationId,
-            Double amount,
-            LocalDateTime issuedDate,
-            LocalDateTime dueDate,
+            BigDecimal amount,
+            OffsetDateTime issuedDate,
+            OffsetDateTime dueDate,
             String status
     ) {
         this.userId = userId;
-        this.carId = carId;
         this.reservationId = reservationId;
         this.amount = amount;
         this.issuedDate = issuedDate;
