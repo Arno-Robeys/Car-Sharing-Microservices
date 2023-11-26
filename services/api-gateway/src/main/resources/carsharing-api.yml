@@ -1,0 +1,6 @@
+openapi: 3.0.3
+info:
+  title: Car Sharing API
+  description: API for Car Sharing
+  version: 1.0.0
+paths: {}
