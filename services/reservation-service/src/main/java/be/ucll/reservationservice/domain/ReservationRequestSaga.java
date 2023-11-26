@@ -1,7 +1,7 @@
 package be.ucll.reservationservice.domain;
 import be.ucll.billingservice.api.model.BilledUserEvent;
 import be.ucll.carservice.api.model.ReservedCarEvent;
-import be.ucll.reservationservice.api.model.ConfirmedReservationEvent;
+//import be.ucll.reservationservice.api.model.ConfirmedReservationEvent;
 import be.ucll.reservationservice.messaging.RabbitMqMessageSender;
 import be.ucll.userservice.api.model.NotifiedUserEvent;
 import org.springframework.stereotype.Component;
@@ -64,5 +64,5 @@ public class ReservationRequestSaga {
             reservation.userNotified();
             eventSender.sendFinalisingReservationCommand(reservation.getId());
         }
-    }
+    }*/
 }
