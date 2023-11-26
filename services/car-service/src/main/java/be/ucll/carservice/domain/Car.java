@@ -1,9 +1,6 @@
 package be.ucll.carservice.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Car {
@@ -12,6 +9,7 @@ public class Car {
     private Integer id;
     private Integer ownerId;
     private String carModel;
+    @Column(name = "\"year\"")
     private Integer year;
     private String location;
     private Double price;

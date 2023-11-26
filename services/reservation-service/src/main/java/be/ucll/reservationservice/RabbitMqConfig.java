@@ -42,6 +42,12 @@ public class RabbitMqConfig {
     public Declarables createReservingCarQueue(){
         return new Declarables(new Queue("q.car-service.reserving-car"));
     }
+
+    @Bean
+    public Declarables createConfirmedReservationExchange(){
+        return new Declarables(new Queue("q.billing-service.billing-user"));
+    }
+
     @Bean
     public Declarables createReservedCarExchange(){
         return new Declarables(

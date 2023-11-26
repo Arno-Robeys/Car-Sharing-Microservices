@@ -17,6 +17,6 @@ public class BillingService {
     private LocalDateTime dueDate;
      */
     public Billing billingUser(Integer userId, Integer reservationId, BigDecimal amount, OffsetDateTime dueDate) {
-        return new Billing(userId, reservationId, amount, OffsetDateTime.now(), dueDate, "UNPAID");
+        return new Billing(userId, reservationId, amount, OffsetDateTime.now(), dueDate, Status.UNPAID);
     }
 }

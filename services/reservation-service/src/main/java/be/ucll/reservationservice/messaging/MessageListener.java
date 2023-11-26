@@ -31,7 +31,7 @@ public class MessageListener {
         this.reservationService = reservationService;
         this.rabbitTemplate = rabbitTemplate;
     }
-    @RabbitListener(queues = {"q.reserved-car.reservation-service"})
+    /*@RabbitListener(queues = {"q.reserved-car.reservation-service"})
     public void onReservedCar(ReservedCarEvent event) {
         LOGGER.info("Receiving event: " + event);
         this.saga.executeSaga(event.getReservationId(), event);
@@ -68,5 +68,5 @@ public class MessageListener {
         event.isDoubleBooking(reservation.getStatus() == ReservationStatus.DOUBLE_BOOKING);
         LOGGER.info("Sending event: " + event);
         this.rabbitTemplate.convertAndSend("x.reserved-car", "", event);
-    }
+    }*/
 }

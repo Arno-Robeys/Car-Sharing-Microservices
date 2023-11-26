@@ -29,7 +29,7 @@ public class MessageListener {
     public void onBillingUser(BillCommand command) {
         LOGGER.info("Received command: " + command);
 
-        Billing billing = billingService.billingUser(Integer.parseInt(command.getUserId()), Integer.parseInt(command.getReservationId()), command.getAmount(), command.getDueDate());
+        Billing billing = billingService.billingUser(command.getUserId(), command.getReservationId(), command.getAmount(), command.getDueDate());
         BilledUserEvent event = new BilledUserEvent();
 
         LOGGER.info("Sending event: " + event);

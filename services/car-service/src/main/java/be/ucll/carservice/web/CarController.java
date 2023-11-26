@@ -14,8 +14,8 @@ public class CarController implements CarListingApiDelegate {
         return null;
     }
 
-    @Override
+    /*@Override
     public ResponseEntity<ApiCar> newCarListing(CarListingCommand carListingCommand)  {
         return null;
-    }
+    }*/
 }

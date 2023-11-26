@@ -119,8 +119,8 @@
                         <configHelp>false</configHelp>
                         <inputSpec>${project.basedir}/src/main/resources/reservation-service-api.yml</inputSpec>
                         <generatorName>spring</generatorName>
-                        <apiPackage>be.ucll.reservationservice.api</apiPackage>
-                        <modelPackage>be.ucll.reservationservice.api.model</modelPackage>
+                        <apiPackage>be.ucll.apigateway.api</apiPackage>
+                        <modelPackage>be.ucll.apigateway.client.reservation.api.model</modelPackage>
                         <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
                         <generateAliasAsModel>true</generateAliasAsModel>
                         <configOptions>
@@ -148,7 +148,7 @@
                         <skipValidateSpec>true</skipValidateSpec>
                         <generateSupportingFiles>false</generateSupportingFiles>
                         <generateApis>false</generateApis>
-                        <modelPackage>be.ucll.reservationservice.client.billing.api.model</modelPackage>
+                        <modelPackage>be.ucll.apigateway.client.billing.api.model</modelPackage>
                         <configOptions>
                             <useJakartaEe>true</useJakartaEe>
                             <useBeanValidation>false</useBeanValidation>
@@ -178,7 +178,7 @@
                         <skipValidateSpec>true</skipValidateSpec>
                         <generateSupportingFiles>false</generateSupportingFiles>
                         <generateApis>false</generateApis>
-                        <modelPackage>be.ucll.reservationservice.client.car.api.model</modelPackage>
+                        <modelPackage>be.ucll.apigateway.client.car.api.model</modelPackage>
                         <configOptions>
                             <useJakartaEe>true</useJakartaEe>
                             <useBeanValidation>false</useBeanValidation>
@@ -208,7 +208,7 @@
                         <skipValidateSpec>true</skipValidateSpec>
                         <generateSupportingFiles>false</generateSupportingFiles>
                         <generateApis>false</generateApis>
-                        <modelPackage>be.ucll.reservationservice.client.user.api.model</modelPackage>
+                        <modelPackage>be.ucll.apigateway.client.user.api.model</modelPackage>
                         <configOptions>
                             <useJakartaEe>true</useJakartaEe>
                             <useBeanValidation>false</useBeanValidation>
