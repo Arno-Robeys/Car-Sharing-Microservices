@@ -117,9 +117,28 @@
                     </goals>
                     <configuration>
                         <configHelp>false</configHelp>
-                        <inputSpec>${project.basedir}/src/main/resources/reservation-service-api.yml</inputSpec>
+                        <inputSpec>${project.basedir}/src/main/resources/carsharing-api.yml</inputSpec>
                         <generatorName>spring</generatorName>
                         <apiPackage>be.ucll.apigateway.api</apiPackage>
+                        <modelPackage>be.ucll.apigateway.api.model</modelPackage>
+                        <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                        <generateAliasAsModel>true</generateAliasAsModel>
+                        <configOptions>
+                            <useJakartaEe>true</useJakartaEe>
+                            <delegatePattern>true</delegatePattern>
+                            <useTags>true</useTags>
+                        </configOptions>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>generate-reservation</id>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                    <configuration>
+                        <configHelp>false</configHelp>
+                        <inputSpec>${project.basedir}/src/main/resources/reservation-service-api.yml</inputSpec>
+                        <generatorName>spring</generatorName>
                         <modelPackage>be.ucll.apigateway.client.reservation.api.model</modelPackage>
                         <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
                         <generateAliasAsModel>true</generateAliasAsModel>
@@ -191,7 +210,7 @@
                     </configuration>
                 </execution>
                 <execution>
-                    <id>generate-reservation</id>
+                    <id>generate-user</id>
                     <goals>
                         <goal>generate</goal>
                     </goals>

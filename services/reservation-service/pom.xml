@@ -174,7 +174,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>generate-reservation</id>
+                        <id>generate-user</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
