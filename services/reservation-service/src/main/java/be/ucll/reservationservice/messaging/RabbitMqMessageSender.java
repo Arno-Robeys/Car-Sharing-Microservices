@@ -34,7 +34,7 @@ public class RabbitMqMessageSender {
         command.carId(carId);
         command.startTime(startTime);
         command.endTime(endTime);
-        sendToQueue("q.reservation-service.reserving-car", command);
+        sendToQueue("q.car-service.reserving-car", command);
     }
 
     public void sendConfirmingReservationCommand(Integer reservationId) {
@@ -49,21 +49,21 @@ public class RabbitMqMessageSender {
         command.userId(userId);
         command.amount(amount);
         command.dueDate(dueDate);
-        sendToQueue("q.reservation-service.billing-user", command);
+        sendToQueue("q.billing-service.billing-user", command);
     }
 
     public void sendNotifyingUserCommand(Integer reservationId, Integer userId, String message) {
         var command = new NotifyingUserCommand();
         command.userId(userId);
         command.message(message);
-        sendToQueue("q.reservation-service.notifying-user", command);
+        sendToQueue("q.user-service.notifying-user", command);
     }
 
     public void sendReverseBillingCommand(Integer reservationId, Integer billId) {
         var command = new ReverseBillingCommand();
         command.reservationId(reservationId);
         command.billId(billId);
-        sendToQueue("q.reservation-service.reverse-billing", command);
+        sendToQueue("q.billing-service.reverse-billing", command);
     }
     public void sendFinalisingReservationCommand(Integer reservationId) {
         var command = new FinalisingReservationCommand();

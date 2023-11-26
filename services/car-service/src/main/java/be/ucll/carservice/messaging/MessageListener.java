@@ -1,7 +1,10 @@
 package be.ucll.carservice.messaging;
+import be.ucll.carservice.api.model.ReservedCarEvent;
+import be.ucll.carservice.domain.Car;
 import be.ucll.carservice.domain.CarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

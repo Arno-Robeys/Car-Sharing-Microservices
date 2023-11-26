@@ -6,6 +6,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
+import java.util.List;
+
 @Service
 @Transactional
 public class ReservationService {
@@ -32,6 +35,14 @@ public class ReservationService {
             requestSaga.decline(apiReservationConfirmation.getReservationId());
         } else {
             requestSaga.accept(apiReservationConfirmation.getReservationId());
+        }
+    }
+    public Reservation reserveCar(Integer userId, Integer carId, OffsetDateTime startDate, OffsetDateTime endDate) {
+        List<Reservation> reservation = repository.getReservationsForCarOverlapping(carId, startDate, endDate);
+        if (!reservation.isEmpty()) {
+            throw new IllegalArgumentException("Car is already reserved in this period");
+        } else {
+            return repository.save(new Reservation(userId,carId,startDate, endDate));
         }
     }
 }

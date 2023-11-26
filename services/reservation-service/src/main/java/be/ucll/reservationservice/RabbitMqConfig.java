@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.Declarables;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -33,5 +37,16 @@ public class RabbitMqConfig {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(cachingConnectionFactory);
         rabbitTemplate.setMessageConverter(converter);
         return rabbitTemplate;
+    }
+    @Bean
+    public Declarables createReservingCarQueue(){
+        return new Declarables(new Queue("q.car-service.reserving-car"));
+    }
+    @Bean
+    public Declarables createReservedCarExchange(){
+        return new Declarables(
+                new FanoutExchange("x.reserved-car"),
+                new Queue("q.reserved-car.reservation-service"),
+                new Binding("q.reserved-car.reservation-service", Binding.DestinationType.QUEUE, "x.reserved-car", "reserved-car.reservation-service", null));
     }
 }
