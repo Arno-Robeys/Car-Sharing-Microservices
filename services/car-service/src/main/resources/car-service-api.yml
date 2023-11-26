@@ -158,6 +158,8 @@ components:
     ReservedCarEvent:
       type: object
       properties:
+        reservationId:
+          type: integer
         carId:
           type: integer
         ownerId:

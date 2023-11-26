@@ -86,9 +86,9 @@ components:
       type: object
       properties:
         reservationId:
-          type: string
+          type: integer
         userId:
-          type: string
+          type: integer
         dueDate:
           type: string
           format: date-time

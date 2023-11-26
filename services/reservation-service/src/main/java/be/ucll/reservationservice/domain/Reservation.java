@@ -1,5 +1,7 @@
 package be.ucll.reservationservice.domain;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -11,6 +13,11 @@ public class Reservation {
     private Integer carId;
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
+    private Integer billId;
+    private OffsetDateTime billDueDate;
+    private BigDecimal billAmount;
+    private String notifyingUserMessage;
+
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
@@ -46,6 +53,22 @@ public class Reservation {
     public OffsetDateTime getEndDate() {
         return endDate;
     }
+    public OffsetDateTime getBillDueDate() {
+        return billDueDate;
+    }
+    public BigDecimal getBillAmount() {
+        return billAmount;
+    }
+    public Integer getBillId() {
+        return billId;
+    }
+    public String getNotifyingUserMessage() {
+        return notifyingUserMessage;
+    }
+    public ReservationStatus getStatus() {
+        return status;
+    }
+
     /*
         Happy Flow:
         REGISTERED,
