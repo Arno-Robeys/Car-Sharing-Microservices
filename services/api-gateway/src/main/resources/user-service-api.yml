@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: User Management Service
+  description: API for User Management Service
+  version: 1.0.0
+paths:
+  /api/v1/users:
+    post:
+      tags:
+        - User Management
+      summary: Register a new user
+      description: Registers a new user
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserCommand'
+      responses:
+        '201':
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUser'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/v1/users/{userId}:
+    get:
+      tags:
+        - User Management
+      summary: Get user by ID
+      description: Retrieve user details by user ID
+      operationId: getUserById
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: ID of the user to retrieve
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUser'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+components:
+  schemas:
+    NotifyingUserCommand:
+      type: object
+      properties:
+        userId:
+          type: integer
+        message:
+          type: string
+    NotifiedUserEvent:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        userId:
+          type: integer
+        message:
+          type: string
+        notifyingUserFailed:
+          type: boolean
+    RegisterUserCommand:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    ApiUser:
+      type: object
+      properties:
+        userId:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 'Functional code specifying the error'
+          example: '1001'
+        message:
+          type: string
+          description: 'Brief explanation about the error'

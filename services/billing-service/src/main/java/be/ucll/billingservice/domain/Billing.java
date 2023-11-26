@@ -23,7 +23,7 @@ public class Billing {
           type: string
           enum: [PAID, UNPAID, OVERDUE]
      */
-    private String status;
+    private Status status;
 
     public Billing(
             Integer userId,
@@ -31,7 +31,7 @@ public class Billing {
             BigDecimal amount,
             OffsetDateTime issuedDate,
             OffsetDateTime dueDate,
-            String status
+            Status status
     ) {
         this.userId = userId;
         this.reservationId = reservationId;

@@ -13,7 +13,7 @@ public class MessageListener {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MessageListener.class);
 
-    @RabbitListener(queues = "q.reservation-created.api-gateway")
+    /*@RabbitListener(queues = "q.reservation-created.api-gateway")
     public void receiveReservationCreated(String message) {
         LOGGER.info("Received message: {}", message);
     }
@@ -26,7 +26,7 @@ public class MessageListener {
     @RabbitListener(queues = "q.reservation-finalized.api-gateway")
     public void receiveReservationFinalized(String message) {
         LOGGER.info("Received message: {}", message);
-    }
+    }*/
 
 
 }
