@@ -73,6 +73,28 @@ paths:
 
 components:
   schemas:
+    ValidateUserCommand:
+      type: object
+      properties:
+        userId:
+          type: integer
+        reservationId:
+          type: integer
+    ValidatedUserEvent:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        userId:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        userValid:
+          type: boolean
+          default: false
     NotifyingUserCommand:
       type: object
       properties:

@@ -94,6 +94,7 @@ components:
           format: email
         userValid:
           type: boolean
+          default: false
     NotifyingUserCommand:
       type: object
       properties:

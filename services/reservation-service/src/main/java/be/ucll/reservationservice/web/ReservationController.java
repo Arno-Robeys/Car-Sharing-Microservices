@@ -2,7 +2,6 @@ package be.ucll.reservationservice.web;
 import be.ucll.reservationservice.api.ReservationApiDelegate;
 import be.ucll.reservationservice.api.model.ApiReservation;
 import be.ucll.reservationservice.api.model.ApiReservationResponse;
-import be.ucll.reservationservice.api.model.ApiReservationResponse;
 import be.ucll.reservationservice.api.model.ReservationCommand;
 import be.ucll.reservationservice.domain.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;

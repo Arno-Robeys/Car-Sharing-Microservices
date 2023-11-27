@@ -1,5 +1,6 @@
 package be.ucll.userservice.messaging;
 
+import be.ucll.userservice.domain.User;
 import be.ucll.userservice.domain.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +28,16 @@ public class MessageListener {
     @RabbitListener(queues = "q.user-service.validate-user")
     public void validateUser(ValidateUserCommand command) {
         LOGGER.info("Validating user command: " + command);
-        var user = userService.validateUser(command.getUserId());
+        User user = userService.validateUser(command.getUserId());
 
         ValidatedUserEvent event = new ValidatedUserEvent();
         event.setReservationId(command.getReservationId());
-        event.setUserValid(true);
         event.setUserId(command.getUserId());
+        if(user != null) {
+            event.setUsername(user.getUsername());
+            event.setEmail(user.getEmail());
+            event.setUserValid(true);
+        }
 
         this.rabbitTemplate.convertAndSend("x.validated-user", "validated-user.reservation-service", event);
     }
