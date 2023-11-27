@@ -37,7 +37,8 @@ public class MessageListener {
         this.saga.executeSaga(event.getReservationId(), event);
     }
 
-    @RabbitListener(queues = {"q.confirmed-reservation.reservation-service"})
+    //TODO: make queue for this in RabbitMqConfig
+    /*@RabbitListener(queues = {"q.confirmed-reservation.reservation-service"})
     public void onConfirmedReservation(ConfirmedReservationEvent event) {
         LOGGER.info("Receiving event: " + event);
         this.saga.executeSaga(event.getReservationId(), event);
@@ -49,7 +50,7 @@ public class MessageListener {
         this.saga.executeSaga(event.getReservationId(), event);
     }
 
-    @RabbitListener(queues = {"q.notified-user.reservation-service"})
+    /*@RabbitListener(queues = {"q.notified-user.reservation-service"})
     public void onNotifiedUser(NotifiedUserEvent event) {
         LOGGER.info("Receiving event: " + event);
         this.saga.executeSaga(event.getReservationId(), event);
@@ -68,5 +69,5 @@ public class MessageListener {
         event.isDoubleBooking(reservation.getStatus() == ReservationStatus.DOUBLE_BOOKING);
         LOGGER.info("Sending event: " + event);
         this.rabbitTemplate.convertAndSend("x.reserved-car", "", event);
-    }
+    }*/
 }

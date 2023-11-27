@@ -56,8 +56,7 @@ public class RabbitMqConfig {
                 new Queue("q.reserved-car.reservation-service"),
                 new Binding("q.reserved-car.reservation-service", Binding.DestinationType.QUEUE, "x.reserved-car", "reserved-car.reservation-service", null));
     }
-    @Bean
-    public Declarables
+
     @Bean
     public Declarables createConfirmingReservationExchange(){
         return new Declarables(
