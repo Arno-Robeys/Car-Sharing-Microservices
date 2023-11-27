@@ -1,6 +1,4 @@
 package be.ucll.billingservice.messaging;
-
-
 import be.ucll.billingservice.api.model.BillCommand;
 import be.ucll.billingservice.api.model.BilledUserEvent;
 import be.ucll.billingservice.domain.Billing;

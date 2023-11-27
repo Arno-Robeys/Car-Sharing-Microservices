@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: Car Sharing API
+  description: API for Car Sharing
+  version: 1.0.0
+paths:
+  /api/v1/test:
+    get:
+      tags:
+        - Test
+      summary: Test
+      description: Test
+      operationId: test
+      responses:
+        '200':
+          description: Successful operation
