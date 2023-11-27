@@ -38,13 +38,14 @@ public class RabbitMqConfig {
         rabbitTemplate.setMessageConverter(converter);
         return rabbitTemplate;
     }
+    /*
     @Bean
     public Declarables createReservingCarQueue(){
         return new Declarables(new Queue("q.car-service.reserving-car"));
     }
 
     @Bean
-    public Declarables createConfirmedReservationExchange(){
+    public Declarables createConfirmedReservationQueue(){
         return new Declarables(new Queue("q.billing-service.billing-user"));
     }
 
@@ -55,4 +56,13 @@ public class RabbitMqConfig {
                 new Queue("q.reserved-car.reservation-service"),
                 new Binding("q.reserved-car.reservation-service", Binding.DestinationType.QUEUE, "x.reserved-car", "reserved-car.reservation-service", null));
     }
+    @Bean
+    public Declarables
+    @Bean
+    public Declarables createConfirmingReservationExchange(){
+        return new Declarables(
+                new FanoutExchange("x.confirmed-reservation"),
+                new Queue("q.confirmed-reservation.reservation-service"),
+                new Binding("q.confirmed-reservation.reservation-service", Binding.DestinationType.QUEUE, "x.confirmed-reservation", "confirmed-reservation.reservation-service", null));
+    }*/
 }
