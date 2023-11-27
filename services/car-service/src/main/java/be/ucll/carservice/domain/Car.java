@@ -15,23 +15,59 @@ public class Car {
     private Double price;
     private Boolean available;
 
-    public Car(
-            Integer ownerId,
-            String carModel,
-            Integer year,
-            String location,
-            Double price,
-            Boolean available
-    ) {
-        this.ownerId = ownerId;
-        this.carModel = carModel;
-        this.year = year;
-        this.location = location;
-        this.price = price;
-        this.available = available;
+    public Integer getId() {
+        return id;
     }
 
-    public Car() {
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 }

@@ -166,16 +166,10 @@ components:
           type: integer
         available:
           type: boolean
-        carNotListed:
-          type: boolean
-        isDoubleBooking:
-          type: boolean
     ReserveCarCommand:
       type: object
       properties:
         reservationId:
-          type: integer
-        userId:
           type: integer
         carId:
           type: integer

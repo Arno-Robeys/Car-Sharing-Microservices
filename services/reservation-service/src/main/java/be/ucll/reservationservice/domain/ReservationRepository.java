@@ -10,8 +10,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("select r " +
             "from Reservation r " +
             "where " +
+            "  r.id <> :reservationId AND " +
             "  r.carId = :carId AND " +
             "  ((r.startDate <= :endDate AND r.endDate >= :startDate) OR " +
             "  (r.endDate >= :startDate AND r.startDate <= :endDate))")
-    List<Reservation> getReservationsForCarOverlapping(Integer carId, OffsetDateTime startDate, OffsetDateTime endDate);
+    List<Reservation> getReservationsForCarOverlapping(Integer reservationId, Integer carId, OffsetDateTime startDate, OffsetDateTime endDate);
 }

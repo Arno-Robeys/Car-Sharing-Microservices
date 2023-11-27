@@ -55,20 +55,5 @@ public class MessageListener {
     public void onNotifiedUser(NotifiedUserEvent event) {
         LOGGER.info("Receiving event: " + event);
         this.saga.executeSaga(event.getReservationId(), event);
-    }
-
-    @RabbitListener(queues = {"q.reservation-service.reserving-car"})
-    public void onReservingCar(ReservationCommand command) {
-        LOGGER.info("Received command: " + command);
-
-        Reservation reservation = reservationService.reserveCar(command.getUserId(), command.getCarId(), command.getStartTime(), command.getEndTime());
-        ReservedCarEvent event = new ReservedCarEvent();
-        event.reservationId(reservation.getId());
-        event.carId(reservation.getCarId());
-        event.ownerId(reservation.getUserId());
-        event.carNotListed(reservation.getStatus() == ReservationStatus.NO_CAR);
-        event.isDoubleBooking(reservation.getStatus() == ReservationStatus.DOUBLE_BOOKING);
-        LOGGER.info("Sending event: " + event);
-        this.rabbitTemplate.convertAndSend("x.reserved-car", "", event);
     }*/
 }

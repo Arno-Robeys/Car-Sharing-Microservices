@@ -17,6 +17,6 @@ public class CarService {
 
 
     public Car reserveCar(Integer carId) {
-        return null;
+        return repository.findById(carId).orElseThrow();
     }
 }

@@ -39,7 +39,6 @@ public class RabbitMqMessageSender {
     public void sendReservingCarCommand(Integer reservationId, Integer userId, Integer carId, OffsetDateTime startTime, OffsetDateTime endTime) {
         var command = new ReserveCarCommand();
         command.reservationId(reservationId);
-        command.userId(userId);
         command.carId(carId);
         sendToQueue("q.reservation-service.reserving-car", command);
     }

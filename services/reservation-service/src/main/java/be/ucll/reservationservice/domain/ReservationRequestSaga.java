@@ -7,6 +7,8 @@ import be.ucll.reservationservice.client.user.api.model.ValidatedUserEvent;
 import be.ucll.reservationservice.messaging.RabbitMqMessageSender;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ReservationRequestSaga {
     private final RabbitMqMessageSender eventSender;
@@ -38,16 +40,19 @@ public class ReservationRequestSaga {
 
     public void executeSaga(Integer id, ReservedCarEvent event) {
         Reservation reservation = repository.findById(id).orElseThrow();
-        if (Boolean.TRUE.equals(event.getCarNotListed())) {
+
+        if(event.getAvailable()) {
+            List<Reservation> reservations = repository.getReservationsForCarOverlapping(reservation.getId(), event.getCarId(), reservation.getStartDate(), reservation.getEndDate());
+            if(reservations.isEmpty()) {
+                reservation.confirmingReservation();
+                System.out.println("Owner needs to confirm reservation");
+            } else {
+                reservation.doubleBooking();
+                System.out.println("Double booking");
+            }
+        } else {
             reservation.carNotListed();
-            System.out.println("Car not listed");
-        }
-        if (Boolean.TRUE.equals(event.getIsDoubleBooking())) {
-            reservation.doubleBooking();
-            System.out.println("Double booking");
-        }
-        if (Boolean.FALSE.equals(event.getCarNotListed()) && Boolean.FALSE.equals(event.getIsDoubleBooking())) {
-            eventSender.sendConfirmingReservationCommand(reservation.getId());
+            System.out.println("Car not listed/available");
         }
     }
 
