@@ -41,7 +41,7 @@ public class ReservationRequestSaga {
     public void executeSaga(Integer id, ReservedCarEvent event) {
         Reservation reservation = repository.findById(id).orElseThrow();
 
-        if(event.getAvailable()) {
+        if(Boolean.TRUE.equals(event.getAvailable())) {
             List<Reservation> reservations = repository.getReservationsForCarOverlapping(reservation.getId(), event.getCarId(), reservation.getStartDate(), reservation.getEndDate());
             if(reservations.isEmpty()) {
                 reservation.confirmingReservation();
