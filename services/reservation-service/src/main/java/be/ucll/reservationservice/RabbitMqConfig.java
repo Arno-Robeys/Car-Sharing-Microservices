@@ -41,7 +41,7 @@ public class RabbitMqConfig {
 
     @Bean
     public Declarables createValidateUserQueue(){
-        return new Declarables(new Queue("q.reservation-service.validate-user"));
+        return new Declarables(new Queue("q.user-service.validate-user"));
     }
 
     @Bean

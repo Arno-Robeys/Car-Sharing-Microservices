@@ -24,7 +24,7 @@ public class MessageListener {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    @RabbitListener(queues = "q.reservation-service.validate-user")
+    @RabbitListener(queues = "q.user-service.validate-user")
     public void validateUser(ValidateUserCommand command) {
         LOGGER.info("Validating user command: " + command);
         var user = userService.validateUser(command.getUserId());

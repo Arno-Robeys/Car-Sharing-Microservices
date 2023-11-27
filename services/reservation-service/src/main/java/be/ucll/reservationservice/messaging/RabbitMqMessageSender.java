@@ -33,7 +33,7 @@ public class RabbitMqMessageSender {
         var command = new ValidateUserCommand();
         command.userId(userId);
         command.reservationId(reservationId);
-        sendToQueue("q.reservation-service.validate-user", command);
+        sendToQueue("q.user-service.validate-user", command);
     }
 
     public void sendReservingCarCommand(Integer reservationId, Integer userId, Integer carId, OffsetDateTime startTime, OffsetDateTime endTime) {
@@ -52,10 +52,8 @@ public class RabbitMqMessageSender {
     }
 
     public void sendConfirmingReservationCommand(Integer reservationId) {
-        var command = new ConfirmingReservationCommand();
-        command.reservationId(reservationId);
         // waiting for owner to confirm but this needs to be an api call
-        sendToQueue("q.reservation-service.confirming-reservation", command);
+        System.out.println("Owner needs to confirm reservation");
     }
     public void sendBillingUserCommand(Integer reservationId, Integer userId, BigDecimal amount, OffsetDateTime dueDate) {
         var command = new BillCommand();
