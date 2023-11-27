@@ -1,7 +1,8 @@
 package be.ucll.carservice.messaging;
-import be.ucll.carservice.api.model.ReservedCarEvent;
 import be.ucll.carservice.domain.Car;
 import be.ucll.carservice.domain.CarService;
+import be.ucll.carservice.api.model.ReserveCarCommand;
+import be.ucll.carservice.api.model.ReservedCarEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -21,5 +22,17 @@ public class MessageListener {
     public MessageListener(CarService carService, RabbitTemplate rabbitTemplate) {
         this.carService = carService;
         this.rabbitTemplate = rabbitTemplate;
+    }
+
+    @RabbitListener(queues = "q.reservation-service.reserving-car")
+    public void receiveReservingCarCommand(ReserveCarCommand command) {
+        LOGGER.info("Received command: " + command);
+        Car car = carService.reserveCar(command.getCarId());
+
+        ReservedCarEvent event = new ReservedCarEvent();
+        event.setReservationId(command.getReservationId());
+
+        LOGGER.info("Sending event: " + event);
+        this.rabbitTemplate.convertAndSend("x.reserved-car", "", event);
     }
 }

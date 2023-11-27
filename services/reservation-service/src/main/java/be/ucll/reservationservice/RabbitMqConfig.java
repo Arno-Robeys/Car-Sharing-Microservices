@@ -38,23 +38,37 @@ public class RabbitMqConfig {
         rabbitTemplate.setMessageConverter(converter);
         return rabbitTemplate;
     }
-    /*
+
+    @Bean
+    public Declarables createValidateUserQueue(){
+        return new Declarables(new Queue("q.reservation-service.validate-user"));
+    }
+
+    @Bean
+    public Declarables createValidatedUserExchange() {
+        return new Declarables(
+                new FanoutExchange("x.validated-user"),
+                new Queue("q.validated-user.reservation-service"),
+                new Binding("q.validated-user.reservation-service", Binding.DestinationType.QUEUE, "x.validated-user", "validated-user.reservation-service", null));
+    }
+
+
     @Bean
     public Declarables createReservingCarQueue(){
-        return new Declarables(new Queue("q.car-service.reserving-car"));
+        return new Declarables(new Queue("q.reservation-service.reserving-car"));
     }
 
     @Bean
-    public Declarables createConfirmedReservationQueue(){
-        return new Declarables(new Queue("q.billing-service.billing-user"));
-    }
-
-    @Bean
-    public Declarables createReservedCarExchange(){
+    public Declarables createReservedCarExchange() {
         return new Declarables(
                 new FanoutExchange("x.reserved-car"),
                 new Queue("q.reserved-car.reservation-service"),
                 new Binding("q.reserved-car.reservation-service", Binding.DestinationType.QUEUE, "x.reserved-car", "reserved-car.reservation-service", null));
+    }
+
+    /*@Bean
+    public Declarables createConfirmedReservationQueue(){
+        return new Declarables(new Queue("q.billing-service.billing-user"));
     }
 
     @Bean

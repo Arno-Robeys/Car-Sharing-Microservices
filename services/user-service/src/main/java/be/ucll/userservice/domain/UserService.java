@@ -8,4 +8,8 @@ public class UserService {
     public User createUser(String username, String email, String password) {
         return new User(username, email, password);
     }
+
+    public User validateUser(Integer userId) {
+        return null;
+    }
 }

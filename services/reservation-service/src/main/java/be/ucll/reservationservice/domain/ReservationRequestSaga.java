@@ -3,6 +3,7 @@ import be.ucll.reservationservice.api.model.ConfirmedReservationEvent;
 import be.ucll.reservationservice.client.billing.api.model.BilledUserEvent;
 import be.ucll.reservationservice.client.car.api.model.ReservedCarEvent;
 import be.ucll.reservationservice.client.user.api.model.NotifiedUserEvent;
+import be.ucll.reservationservice.client.user.api.model.ValidatedUserEvent;
 import be.ucll.reservationservice.messaging.RabbitMqMessageSender;
 import org.springframework.stereotype.Component;
 
@@ -17,21 +18,35 @@ public class ReservationRequestSaga {
     }
 
     public void executeSaga(Reservation reservation) {
-        reservation.reservingCar();
-        eventSender.sendReservingCarCommand(reservation.getId(), reservation.getCarId(), reservation.getStartDate(), reservation.getEndDate());
+        reservation.validateUser();
+        eventSender.sendValidateUserCommand(reservation.getId(), reservation.getUserId());
     }
+
+    public void executeSage(Integer id, ValidatedUserEvent event) {
+        Reservation reservation = repository.findById(id).orElseThrow();
+        if (Boolean.FALSE.equals(event.getUserValid())) {
+            reservation.userNotValid();
+            //Send notification to user (Now just print)
+            System.out.println("User not valid");
+        } else {
+            reservation.reservingCar();
+            eventSender.sendReservingCarCommand(reservation.getId(), reservation.getUserId(), reservation.getCarId(), reservation.getStartDate(), reservation.getEndDate());
+        }
+    }
+
+
 
     public void executeSaga(Integer id, ReservedCarEvent event) {
         Reservation reservation = repository.findById(id).orElseThrow();
-        if (event.getCarNotListed()) {
+        if (Boolean.TRUE.equals(event.getCarNotListed())) {
             reservation.carNotListed();
             System.out.println("Car not listed");
         }
-        if (event.getIsDoubleBooking()) {
+        if (Boolean.TRUE.equals(event.getIsDoubleBooking())) {
             reservation.doubleBooking();
             System.out.println("Double booking");
         }
-        if (!event.getCarNotListed() && !event.getIsDoubleBooking()) {
+        if (Boolean.FALSE.equals(event.getCarNotListed()) && Boolean.FALSE.equals(event.getIsDoubleBooking())) {
             eventSender.sendConfirmingReservationCommand(reservation.getId());
         }
     }
@@ -48,7 +63,7 @@ public class ReservationRequestSaga {
 
     public void executeSaga(Integer id, BilledUserEvent event) {
         Reservation reservation = repository.findById(id).orElseThrow();
-        if (event.getBillingUserFailed()) {
+        if (Boolean.TRUE.equals(event.getBillingUserFailed())) {
             reservation.billingUserFailed();
             System.out.println("Billing user failed");
         } else {
@@ -60,7 +75,7 @@ public class ReservationRequestSaga {
 
     public void executeSaga(Integer id, NotifiedUserEvent event) {
         Reservation reservation = repository.findById(id).orElseThrow();
-        if (event.getNotifyingUserFailed()) {
+        if (Boolean.TRUE.equals(event.getNotifyingUserFailed())) {
             reservation.notifyingUserFailed();
             eventSender.sendReverseBillingCommand(reservation.getId(), reservation.getBillId());
             System.out.println("Notifying user failed");

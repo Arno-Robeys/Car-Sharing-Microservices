@@ -1,7 +1,8 @@
 package be.ucll.reservationservice.web;
 import be.ucll.reservationservice.api.ReservationApiDelegate;
 import be.ucll.reservationservice.api.model.ApiReservation;
-import be.ucll.reservationservice.api.model.ConfirmingReservationCommand;
+import be.ucll.reservationservice.api.model.ApiReservationResponse;
+import be.ucll.reservationservice.api.model.ApiReservationResponse;
 import be.ucll.reservationservice.api.model.ReservationCommand;
 import be.ucll.reservationservice.domain.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class ReservationController implements ReservationApiDelegate {
     }
 
     @Override
-    public ResponseEntity<ApiReservation> createReservation(ReservationCommand apiReservationRequest) {
-        ApiReservation response = new ApiReservation();
+    public ResponseEntity<ApiReservationResponse> createReservation(ReservationCommand apiReservationRequest) {
+        ApiReservationResponse response = new ApiReservationResponse();
         response.reservationId(reservationService.registerRequest(apiReservationRequest));
         return ResponseEntity.ok(response);
     }

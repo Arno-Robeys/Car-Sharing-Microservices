@@ -75,6 +75,7 @@ public class Reservation {
     /*
         Happy Flow:
         REGISTERED,
+        VALIDATING_USER,
         RESERVING_CAR,
         CONFIRMING_RESERVATION,
         BILLING_USER,
@@ -82,6 +83,9 @@ public class Reservation {
      */
     public void registered() {
         this.status = ReservationStatus.REGISTERED;
+    }
+    public void validateUser() {
+        this.status = ReservationStatus.VALIDATING_USER;
     }
     public void reservingCar() {
         this.status = ReservationStatus.RESERVING_CAR;
@@ -100,12 +104,16 @@ public class Reservation {
     }
     /*
         Failure States:
+        NO_VALID_USER,
         NO_CAR,
         DOUBLE_BOOKING,
         OWNER_DECLINES,
         BILLING_USER_FAILED,
         NOTIFYING_USER_FAILED,
      */
+    public void userNotValid() {
+        this.status = ReservationStatus.NO_VALID_USER;
+    }
     public void carNotListed() {
         this.status = ReservationStatus.NO_CAR;
     }
@@ -135,4 +143,5 @@ public class Reservation {
     public void listingRemoved(){
         this.status = ReservationStatus.LISTING_REMOVED;
     }
+
 }

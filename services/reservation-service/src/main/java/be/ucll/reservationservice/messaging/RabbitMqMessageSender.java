@@ -3,13 +3,14 @@ import be.ucll.reservationservice.api.model.ConfirmingReservationCommand;
 import be.ucll.reservationservice.api.model.FinalisingReservationCommand;
 import be.ucll.reservationservice.client.billing.api.model.BillCommand;
 import be.ucll.reservationservice.client.billing.api.model.ReverseBillingCommand;
+import be.ucll.reservationservice.client.car.api.model.ReserveCarCommand;
 import be.ucll.reservationservice.client.user.api.model.NotifyingUserCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import be.ucll.reservationservice.api.model.ReservationCommand;
+import be.ucll.reservationservice.client.user.api.model.ValidateUserCommand;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -28,13 +29,26 @@ public class RabbitMqMessageSender {
         this.rabbitTemplate.convertAndSend(queue, message);
     }
 
-    public void sendReservingCarCommand(Integer userId, Integer carId, OffsetDateTime startTime, OffsetDateTime endTime) {
-        var command = new ReservationCommand();
+    public void sendValidateUserCommand(Integer reservationId, Integer userId) {
+        var command = new ValidateUserCommand();
+        command.userId(userId);
+        command.reservationId(reservationId);
+        sendToQueue("q.reservation-service.validate-user", command);
+    }
+
+    public void sendReservingCarCommand(Integer reservationId, Integer userId, Integer carId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        var command = new ReserveCarCommand();
+        command.reservationId(reservationId);
         command.userId(userId);
         command.carId(carId);
-        command.startTime(startTime);
-        command.endTime(endTime);
         sendToQueue("q.reservation-service.reserving-car", command);
+    }
+
+    public void sendReleaseCarCommand(Integer reservationId, Integer carId) {
+        var command = new ReserveCarCommand();
+        command.reservationId(reservationId);
+        command.carId(carId);
+        sendToQueue("q.reservation-service.release-car", command);
     }
 
     public void sendConfirmingReservationCommand(Integer reservationId) {

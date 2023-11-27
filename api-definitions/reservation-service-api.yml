@@ -23,7 +23,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiReservation'
+                $ref: '#/components/schemas/ApiReservationResponse'
         '500':
           description: Internal Server Error
           content:
@@ -167,6 +167,11 @@ components:
         endTime:
           type: string
           format: date-time
+    ApiReservationResponse:
+      type: object
+      properties:
+        reservationId:
+          type: integer
     ApiReservation:
       type: object
       properties:

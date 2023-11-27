@@ -170,6 +170,15 @@ components:
           type: boolean
         isDoubleBooking:
           type: boolean
+    ReserveCarCommand:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        userId:
+          type: integer
+        carId:
+          type: integer
     CarListingCommand:
       type: object
       properties:

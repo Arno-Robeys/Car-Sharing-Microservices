@@ -1,13 +1,8 @@
 package be.ucll.reservationservice.messaging;
-import be.ucll.reservationservice.api.model.ConfirmedReservationEvent;
-import be.ucll.reservationservice.api.model.ReservationCommand;
-import be.ucll.reservationservice.client.billing.api.model.BilledUserEvent;
+import be.ucll.reservationservice.client.user.api.model.ValidatedUserEvent;
 import be.ucll.reservationservice.client.car.api.model.ReservedCarEvent;
-import be.ucll.reservationservice.client.user.api.model.NotifiedUserEvent;
-import be.ucll.reservationservice.domain.Reservation;
 import be.ucll.reservationservice.domain.ReservationRequestSaga;
 import be.ucll.reservationservice.domain.ReservationService;
-import be.ucll.reservationservice.domain.ReservationStatus;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +30,12 @@ public class MessageListener {
     public void onReservedCar(ReservedCarEvent event) {
         LOGGER.info("Receiving event: " + event);
         this.saga.executeSaga(event.getReservationId(), event);
+    }
+
+    @RabbitListener(queues = {"q.validated-user.reservation-service"})
+    public void onUserValidated(ValidatedUserEvent event) {
+        LOGGER.info("Receiving event: " + event);
+        this.saga.executeSage(event.getReservationId(), event);
     }
 
     //TODO: make queue for this in RabbitMqConfig
