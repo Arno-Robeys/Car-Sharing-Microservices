@@ -23,7 +23,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiReservation'
+                $ref: '#/components/schemas/ApiReservationResponse'
         '500':
           description: Internal Server Error
           content:
@@ -37,7 +37,7 @@ paths:
         - Reservation
       summary: Get reservation by ID
       description: Retrieve reservation details by reservation ID
-      operationId: GetReservationById
+      operationId: getReservationById
       parameters:
         - in: path
           name: reservationId
@@ -59,9 +59,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
     patch:
+      tags:
+        - Reservation
       summary: Confirm or decline a reservation
       description: Allows a car owner to confirm or decline a reservation.
-      operationId: updateAvailable
+      operationId: confirmReservation
       parameters:
         - in: path
           name: reservationId
@@ -95,6 +97,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
     delete:
+      tags:
+        - Reservation
       summary: Delete a reservation
       description: Deletes a reservation with the specified ID.
       operationId: deleteReservation
@@ -121,6 +125,39 @@ paths:
 
 components:
   schemas:
+    FinalisingReservationCommand:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        userId:
+          type: integer
+        carId:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+    ConfirmingReservationCommand:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        ownerDeclines:
+          type: boolean
+    ConfirmedReservationEvent:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        userId:
+          type: integer
+        carId:
+          type: integer
+        ownerDeclines:
+          type: boolean
     ReservationCommand:
       type: object
       properties:
@@ -134,6 +171,11 @@ components:
         endTime:
           type: string
           format: date-time
+    ApiReservationResponse:
+      type: object
+      properties:
+        reservationId:
+          type: integer
     ApiReservation:
       type: object
       properties:

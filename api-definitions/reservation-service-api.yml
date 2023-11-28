@@ -37,7 +37,7 @@ paths:
         - Reservation
       summary: Get reservation by ID
       description: Retrieve reservation details by reservation ID
-      operationId: GetReservationById
+      operationId: getReservationById
       parameters:
         - in: path
           name: reservationId
@@ -59,9 +59,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
     patch:
+      tags:
+        - Reservation
       summary: Confirm or decline a reservation
       description: Allows a car owner to confirm or decline a reservation.
-      operationId: updateAvailable
+      operationId: confirmReservation
       parameters:
         - in: path
           name: reservationId
@@ -95,6 +97,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
     delete:
+      tags:
+        - Reservation
       summary: Delete a reservation
       description: Deletes a reservation with the specified ID.
       operationId: deleteReservation
