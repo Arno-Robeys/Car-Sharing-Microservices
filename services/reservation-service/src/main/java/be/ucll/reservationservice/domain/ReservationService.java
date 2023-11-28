@@ -6,9 +6,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
-import java.util.List;
-
 @Service
 @Transactional
 public class ReservationService {
@@ -30,11 +27,7 @@ public class ReservationService {
         return reservation.getId();
     }
 
-    public void ownerConfirmsReservationRequest(ConfirmingReservationCommand apiReservationConfirmation) {
-        if (apiReservationConfirmation.getOwnerDeclines()) {
-            requestSaga.decline(apiReservationConfirmation.getReservationId());
-        } else {
-            requestSaga.accept(apiReservationConfirmation.getReservationId());
-        }
+    public void ownerConfirmsReservationRequest(ConfirmingReservationCommand confirmingReservationCommand) {
+        requestSaga.ownerConfirmsReservation(confirmingReservationCommand);
     }
 }

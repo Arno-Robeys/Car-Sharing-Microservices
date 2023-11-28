@@ -96,33 +96,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-    delete:
-      tags:
-        - Reservation
-      summary: Delete a reservation
-      description: Deletes a reservation with the specified ID.
-      operationId: deleteReservation
-      parameters:
-        - name: reservationId
-          in: path
-          required: true
-          description: The ID of the reservation to delete.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Reservation deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiReservation'
-        '404':
-          description: Reservation not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-
 components:
   schemas:
     FinalisingReservationCommand:

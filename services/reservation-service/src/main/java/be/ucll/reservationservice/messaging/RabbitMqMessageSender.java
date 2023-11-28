@@ -1,8 +1,8 @@
 package be.ucll.reservationservice.messaging;
-import be.ucll.reservationservice.api.model.ConfirmingReservationCommand;
 import be.ucll.reservationservice.api.model.FinalisingReservationCommand;
 import be.ucll.reservationservice.client.billing.api.model.BillCommand;
 import be.ucll.reservationservice.client.billing.api.model.ReverseBillingCommand;
+import be.ucll.reservationservice.client.car.api.model.ConfirmOwnerCommand;
 import be.ucll.reservationservice.client.car.api.model.ReserveCarCommand;
 import be.ucll.reservationservice.client.user.api.model.NotifyingUserCommand;
 import org.slf4j.Logger;
@@ -43,17 +43,15 @@ public class RabbitMqMessageSender {
         sendToQueue("q.reservation-service.reserving-car", command);
     }
 
-    public void sendReleaseCarCommand(Integer reservationId, Integer carId) {
-        var command = new ReserveCarCommand();
+    public void sendConfirmingReservationCommand(Integer reservationId, Integer userId, Integer carId, Boolean accepted) {
+        var command = new ConfirmOwnerCommand();
         command.reservationId(reservationId);
+        command.ownerId(userId);
         command.carId(carId);
-        sendToQueue("q.reservation-service.release-car", command);
+        command.accepted(accepted);
+        sendToQueue("q.car-service.confirm-reservation-check-owner", command);
     }
 
-    public void sendConfirmingReservationCommand(Integer reservationId) {
-        // waiting for owner to confirm but this needs to be an api call
-        System.out.println("Owner needs to confirm reservation");
-    }
     public void sendBillingUserCommand(Integer reservationId, Integer userId, BigDecimal amount, OffsetDateTime dueDate) {
         var command = new BillCommand();
         command.reservationId(reservationId);

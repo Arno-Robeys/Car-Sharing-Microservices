@@ -1,4 +1,6 @@
 package be.ucll.carservice.messaging;
+import be.ucll.carservice.api.model.ConfirmOwnerCommand;
+import be.ucll.carservice.api.model.ConfirmOwnerEvent;
 import be.ucll.carservice.domain.Car;
 import be.ucll.carservice.domain.CarService;
 import be.ucll.carservice.api.model.ReserveCarCommand;
@@ -37,5 +39,19 @@ public class MessageListener {
 
         LOGGER.info("Sending event: " + event);
         this.rabbitTemplate.convertAndSend("x.reserved-car", "", event);
+    }
+
+    @RabbitListener(queues = "q.car-service.confirm-reservation-check-owner")
+    public void receiveConfirmingReservationCommand(ConfirmOwnerCommand command) {
+        LOGGER.info("Received command: " + command);
+
+        ConfirmOwnerEvent event = new ConfirmOwnerEvent();
+        event.setReservationId(command.getReservationId());
+        event.setOwnerId(command.getOwnerId());
+        event.setCarId(command.getCarId());
+        event.setAccepted(command.getAccepted());
+        event.setIsOwner(true);
+
+        this.rabbitTemplate.convertAndSend("x.confirmed-reservation", "", event);
     }
 }

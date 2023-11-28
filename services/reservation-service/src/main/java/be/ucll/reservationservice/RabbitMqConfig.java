@@ -66,9 +66,9 @@ public class RabbitMqConfig {
                 new Binding("q.reserved-car.reservation-service", Binding.DestinationType.QUEUE, "x.reserved-car", "reserved-car.reservation-service", null));
     }
 
-    /*@Bean
-    public Declarables createConfirmedReservationQueue(){
-        return new Declarables(new Queue("q.billing-service.billing-user"));
+    @Bean
+    public Declarables createConfirmingReservationQueue(){
+        return new Declarables(new Queue("q.car-service.confirm-reservation-check-owner"));
     }
 
     @Bean
@@ -77,5 +77,10 @@ public class RabbitMqConfig {
                 new FanoutExchange("x.confirmed-reservation"),
                 new Queue("q.confirmed-reservation.reservation-service"),
                 new Binding("q.confirmed-reservation.reservation-service", Binding.DestinationType.QUEUE, "x.confirmed-reservation", "confirmed-reservation.reservation-service", null));
+    }
+
+    /*@Bean
+    public Declarables createConfirmedReservationQueue(){
+        return new Declarables(new Queue("q.billing-service.billing-user"));
     }*/
 }

@@ -29,9 +29,9 @@ public class ReservationController implements ReservationApiDelegate {
         return null;
     }
 
-    @Override
-    public ResponseEntity<ApiReservation> confirmReservation(String reservationId) {
-        //reservationService.ownerConfirmsReservationRequest(apiReservationConfirmation);
+   @Override
+    public ResponseEntity<ApiReservation> confirmReservation(ConfirmingReservationCommand confirmingReservationCommand) {
+        reservationService.ownerConfirmsReservationRequest(confirmingReservationCommand);
         return ResponseEntity.ok().build();
     }
 }

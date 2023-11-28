@@ -111,11 +111,11 @@
             <version>6.4.0</version>
             <executions>
                 <execution>
+                    <id>generate-server</id>
                     <goals>
                         <goal>generate</goal>
                     </goals>
                     <configuration>
-                        <configHelp>false</configHelp>
                         <inputSpec>${project.basedir}/src/main/resources/car-sharing-api.yml</inputSpec>
                         <generatorName>spring</generatorName>
                         <apiPackage>be.ucll.apigateway.api</apiPackage>
@@ -137,15 +137,26 @@
                     <configuration>
                         <configHelp>false</configHelp>
                         <inputSpec>${project.basedir}/src/main/resources/reservation-service-api.yml</inputSpec>
-                        <generatorName>spring</generatorName>
+                        <generatorName>java</generatorName>
+                        <library>resttemplate</library>
+                        <generateApis>true</generateApis>
+                        <generateApiDocumentation>false</generateApiDocumentation>
+                        <generateApiTests>false</generateApiTests>
+                        <generateModels>true</generateModels>
+                        <generateModelDocumentation>false</generateModelDocumentation>
+                        <generateModelTests>false</generateModelTests>
+                        <skipValidateSpec>true</skipValidateSpec>
+                        <generateSupportingFiles>true</generateSupportingFiles>
                         <apiPackage>be.ucll.apigateway.client.reservation.api</apiPackage>
                         <modelPackage>be.ucll.apigateway.client.reservation.model</modelPackage>
-                        <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
-                        <generateAliasAsModel>true</generateAliasAsModel>
                         <configOptions>
                             <useJakartaEe>true</useJakartaEe>
-                            <delegatePattern>true</delegatePattern>
-                            <useTags>true</useTags>
+                            <useBeanValidation>false</useBeanValidation>
+                            <performBeanValidation>false</performBeanValidation>
+                            <interfaceOnly>false</interfaceOnly>
+                            <useOptional>false</useOptional>
+                            <serializableModel>true</serializableModel>
+                            <openApiNullable>false</openApiNullable>
                         </configOptions>
                     </configuration>
                 </execution>
@@ -165,8 +176,7 @@
                         <generateModelDocumentation>false</generateModelDocumentation>
                         <generateModelTests>false</generateModelTests>
                         <skipValidateSpec>true</skipValidateSpec>
-                        <generateSupportingFiles>false</generateSupportingFiles>
-                        <generateApis>false</generateApis>
+                        <generateSupportingFiles>true</generateSupportingFiles>
                         <apiPackage>be.ucll.apigateway.client.billing.api</apiPackage>
                         <modelPackage>be.ucll.apigateway.client.billing.model</modelPackage>
                         <configOptions>
@@ -196,8 +206,7 @@
                         <generateModelDocumentation>false</generateModelDocumentation>
                         <generateModelTests>false</generateModelTests>
                         <skipValidateSpec>true</skipValidateSpec>
-                        <generateSupportingFiles>false</generateSupportingFiles>
-                        <generateApis>false</generateApis>
+                        <generateSupportingFiles>true</generateSupportingFiles>
                         <apiPackage>be.ucll.apigateway.client.car.api</apiPackage>
                         <modelPackage>be.ucll.apigateway.client.car.model</modelPackage>
                         <configOptions>
@@ -227,8 +236,7 @@
                         <generateModelDocumentation>false</generateModelDocumentation>
                         <generateModelTests>false</generateModelTests>
                         <skipValidateSpec>true</skipValidateSpec>
-                        <generateSupportingFiles>false</generateSupportingFiles>
-                        <generateApis>false</generateApis>
+                        <generateSupportingFiles>true</generateSupportingFiles>
                         <apiPackage>be.ucll.apigateway.client.user.api</apiPackage>
                         <modelPackage>be.ucll.apigateway.client.user.model</modelPackage>
                         <configOptions>

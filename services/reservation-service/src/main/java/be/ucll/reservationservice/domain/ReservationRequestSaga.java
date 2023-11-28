@@ -1,6 +1,8 @@
 package be.ucll.reservationservice.domain;
 import be.ucll.reservationservice.api.model.ConfirmedReservationEvent;
+import be.ucll.reservationservice.api.model.ConfirmingReservationCommand;
 import be.ucll.reservationservice.client.billing.api.model.BilledUserEvent;
+import be.ucll.reservationservice.client.car.api.model.ConfirmOwnerEvent;
 import be.ucll.reservationservice.client.car.api.model.ReservedCarEvent;
 import be.ucll.reservationservice.client.user.api.model.NotifiedUserEvent;
 import be.ucll.reservationservice.client.user.api.model.ValidatedUserEvent;
@@ -56,13 +58,15 @@ public class ReservationRequestSaga {
         }
     }
 
-    public void executeSaga(Integer id, ConfirmedReservationEvent event) {
+    public void executeSaga(Integer id, ConfirmOwnerEvent event) {
         Reservation reservation = repository.findById(id).orElseThrow();
-        if (event.getOwnerDeclines()) {
-            reservation.ownerDeclines();
+        if (Boolean.TRUE.equals(event.getAccepted())) {
+            reservation.confirmingReservation();
+            eventSender.sendBillingUserCommand(reservation.getId(), reservation.getUserId(), reservation.getBillAmount(), reservation.getBillDueDate());
             System.out.println("Owner declines");
         } else {
-            eventSender.sendBillingUserCommand(reservation.getId(), reservation.getUserId(), reservation.getBillAmount(), reservation.getBillDueDate());
+            reservation.ownerDeclines();
+            System.out.println("Owner declines");
         }
     }
 
@@ -90,27 +94,8 @@ public class ReservationRequestSaga {
         }
     }
 
-    public void decline(Integer reservationId) {
-        Reservation reservation = repository.findById(reservationId).orElseThrow();
-        if(reservation.getStatus() == ReservationStatus.CONFIRMING_RESERVATION) {
-            ConfirmedReservationEvent confirmedReservationEvent = new ConfirmedReservationEvent();
-            confirmedReservationEvent.reservationId(reservationId);
-            confirmedReservationEvent.ownerDeclines(true);
-            executeSaga(reservationId, confirmedReservationEvent);
-        } else {
-            System.out.println("Decline not possible");
-        }
-    }
-
-    public void accept(Integer reservationId) {
-        Reservation reservation = repository.findById(reservationId).orElseThrow();
-        if(reservation.getStatus() != ReservationStatus.CONFIRMING_RESERVATION) {
-            System.out.println("Accept not possible");
-        } else {
-            ConfirmedReservationEvent confirmedReservationEvent = new ConfirmedReservationEvent();
-            confirmedReservationEvent.reservationId(reservationId);
-            confirmedReservationEvent.ownerDeclines(false);
-            executeSaga(reservationId, confirmedReservationEvent);
-        }
+    public void ownerConfirmsReservation(ConfirmingReservationCommand confirmingReservationCommand) {
+        Reservation reservation = repository.findById(confirmingReservationCommand.getReservationId()).orElseThrow();
+        eventSender.sendConfirmingReservationCommand(confirmingReservationCommand.getReservationId(), confirmingReservationCommand.getOwnerId(), reservation.getCarId(), confirmingReservationCommand.getAccepted());
     }
 }

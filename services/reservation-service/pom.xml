@@ -122,7 +122,6 @@
                             <inputSpec>${project.basedir}/src/main/resources/billing-service-api.yml</inputSpec>
                             <generatorName>java</generatorName>
                             <library>resttemplate</library>
-                            <generateApis>true</generateApis>
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateApiTests>false</generateApiTests>
                             <generateModels>true</generateModels>
@@ -152,7 +151,6 @@
                             <inputSpec>${project.basedir}/src/main/resources/car-service-api.yml</inputSpec>
                             <generatorName>java</generatorName>
                             <library>resttemplate</library>
-                            <generateApis>true</generateApis>
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateApiTests>false</generateApiTests>
                             <generateModels>true</generateModels>
@@ -182,7 +180,6 @@
                             <inputSpec>${project.basedir}/src/main/resources/user-service-api.yml</inputSpec>
                             <generatorName>java</generatorName>
                             <library>resttemplate</library>
-                            <generateApis>true</generateApis>
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateApiTests>false</generateApiTests>
                             <generateModels>true</generateModels>

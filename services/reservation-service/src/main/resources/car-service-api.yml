@@ -173,6 +173,30 @@ components:
           type: integer
         carId:
           type: integer
+    ConfirmOwnerCommand:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        carId:
+          type: integer
+        ownerId:
+          type: integer
+        accepted:
+          type: boolean
+    ConfirmOwnerEvent:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+        carId:
+          type: integer
+        ownerId:
+          type: integer
+        accepted:
+          type: boolean
+        isOwner:
+          type: boolean
     CarListingCommand:
       type: object
       properties:
