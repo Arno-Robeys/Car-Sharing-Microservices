@@ -34,7 +34,7 @@ public class MessageListener {
         ReservedCarEvent event = new ReservedCarEvent();
         event.setReservationId(command.getReservationId());
         event.setCarId(command.getCarId());
-        event.setOwnerId(car.getOwnerId());
+        event.setOwnerEmail(car.getOwnerEmail());
         event.setAvailable(car.getAvailable());
 
         LOGGER.info("Sending event: " + event);
@@ -45,12 +45,13 @@ public class MessageListener {
     public void receiveConfirmingReservationCommand(ConfirmOwnerCommand command) {
         LOGGER.info("Received command: " + command);
 
+        String ownerEmail = carService.getOwnerEmail(command.getCarId());
         ConfirmOwnerEvent event = new ConfirmOwnerEvent();
         event.setReservationId(command.getReservationId());
-        event.setOwnerId(command.getOwnerId());
+        event.setOwnerEmail(command.getOwnerEmail());
         event.setCarId(command.getCarId());
         event.setAccepted(command.getAccepted());
-        event.setIsOwner(true);
+        event.setIsOwner(command.getOwnerEmail().equals(ownerEmail));
 
         this.rabbitTemplate.convertAndSend("x.confirmed-reservation", "", event);
     }

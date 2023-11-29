@@ -51,26 +51,26 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiReservation'
+                $ref: '#/components/schemas/ConfirmingReservationCommand'
         '404':
           description: Reservation not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+  /api/v1/reservations/confirm:
     patch:
       tags:
         - Reservation
       summary: Confirm or decline a reservation
       description: Allows a car owner to confirm or decline a reservation.
       operationId: confirmReservation
-      parameters:
-        - in: path
-          name: reservationId
-          required: true
-          schema:
-            type: string
-          description: Unique identifier of the reservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmingReservationCommand'
       responses:
         '200':
           description: Reservation confirmation status updated
@@ -103,8 +103,9 @@ components:
       properties:
         reservationId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         carId:
           type: integer
         startTime:
@@ -118,24 +119,17 @@ components:
       properties:
         reservationId:
           type: integer
-        ownerDeclines:
-          type: boolean
-    ConfirmedReservationEvent:
-      type: object
-      properties:
-        reservationId:
-          type: integer
-        userId:
-          type: integer
-        carId:
-          type: integer
-        ownerDeclines:
+        ownerEmail:
+          type: string
+          format: email
+        accepted:
           type: boolean
     ReservationCommand:
       type: object
       properties:
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         carId:
           type: integer
         startTime:
@@ -149,13 +143,16 @@ components:
       properties:
         reservationId:
           type: integer
+
+
     ApiReservation:
       type: object
       properties:
         reservationId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         carId:
           type: integer
         startTime:
@@ -164,12 +161,6 @@ components:
         endTime:
           type: string
           format: date-time
-        status:
-          type: string
-          enum:
-            - PENDING
-            - CONFIRMED
-            - DECLINED
     ApiError:
       type: object
       properties:

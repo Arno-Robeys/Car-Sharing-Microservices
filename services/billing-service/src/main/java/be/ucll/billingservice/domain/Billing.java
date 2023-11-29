@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -13,7 +14,9 @@ public class Billing {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private Integer userId;
+
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
+    private String userEmail;
     private Integer reservationId;
     private BigDecimal amount;
     private OffsetDateTime issuedDate;
@@ -26,14 +29,14 @@ public class Billing {
     private Status status;
 
     public Billing(
-            Integer userId,
+            String userEmail,
             Integer reservationId,
             BigDecimal amount,
             OffsetDateTime issuedDate,
             OffsetDateTime dueDate,
             Status status
     ) {
-        this.userId = userId;
+        this.userEmail = userEmail;
         this.reservationId = reservationId;
         this.amount = amount;
         this.issuedDate = issuedDate;

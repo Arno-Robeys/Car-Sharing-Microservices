@@ -1,10 +1,8 @@
 package be.ucll.reservationservice.domain;
-import be.ucll.reservationservice.api.model.ConfirmedReservationEvent;
 import be.ucll.reservationservice.api.model.ConfirmingReservationCommand;
 import be.ucll.reservationservice.client.billing.api.model.BilledUserEvent;
 import be.ucll.reservationservice.client.car.api.model.ConfirmOwnerEvent;
 import be.ucll.reservationservice.client.car.api.model.ReservedCarEvent;
-import be.ucll.reservationservice.client.user.api.model.NotifiedUserEvent;
 import be.ucll.reservationservice.client.user.api.model.ValidatedUserEvent;
 import be.ucll.reservationservice.messaging.RabbitMqMessageSender;
 import org.springframework.stereotype.Component;
@@ -23,18 +21,17 @@ public class ReservationRequestSaga {
 
     public void executeSaga(Reservation reservation) {
         reservation.validateUser();
-        eventSender.sendValidateUserCommand(reservation.getId(), reservation.getUserId());
+        eventSender.sendValidateUserCommand(reservation.getId(), reservation.getUserEmail());
     }
 
     public void executeSage(Integer id, ValidatedUserEvent event) {
         Reservation reservation = repository.findById(id).orElseThrow();
         if (Boolean.FALSE.equals(event.getUserValid())) {
             reservation.userNotValid();
-            //Send notification to user (Now just print)
-            System.out.println("User not valid");
+            eventSender.sendEmailNotificationCommand(event.getEmail(), "This email/user doesn't exist in our system");
         } else {
             reservation.reservingCar();
-            eventSender.sendReservingCarCommand(reservation.getId(), reservation.getUserId(), reservation.getCarId(), reservation.getStartDate(), reservation.getEndDate());
+            eventSender.sendReservingCarCommand(reservation.getId(), reservation.getCarId());
         }
     }
 
@@ -47,14 +44,14 @@ public class ReservationRequestSaga {
             List<Reservation> reservations = repository.getReservationsForCarOverlapping(reservation.getId(), event.getCarId(), reservation.getStartDate(), reservation.getEndDate());
             if(reservations.isEmpty()) {
                 reservation.confirmingReservation();
-                System.out.println("Owner needs to confirm reservation");
+                eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Owner needs to confirm reservation");
             } else {
                 reservation.doubleBooking();
-                System.out.println("Double booking");
+                eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "This car is already booked");
             }
         } else {
             reservation.carNotListed();
-            System.out.println("Car not listed/available");
+            eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Car not listed/available");
         }
     }
 
@@ -62,11 +59,10 @@ public class ReservationRequestSaga {
         Reservation reservation = repository.findById(id).orElseThrow();
         if (Boolean.TRUE.equals(event.getAccepted())) {
             reservation.confirmingReservation();
-            eventSender.sendBillingUserCommand(reservation.getId(), reservation.getUserId(), reservation.getBillAmount(), reservation.getBillDueDate());
-            System.out.println("Owner declines");
+            eventSender.sendBillingUserCommand(reservation.getId(), reservation.getUserEmail(), reservation.getBillAmount(), reservation.getBillDueDate());
         } else {
             reservation.ownerDeclines();
-            System.out.println("Owner declines");
+            eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Owner declined reservation");
         }
     }
 
@@ -74,28 +70,18 @@ public class ReservationRequestSaga {
         Reservation reservation = repository.findById(id).orElseThrow();
         if (Boolean.TRUE.equals(event.getBillingUserFailed())) {
             reservation.billingUserFailed();
-            System.out.println("Billing user failed");
+            eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Billing user failed");
         } else {
             reservation.userBilled();
-            eventSender.sendNotifyingUserCommand(reservation.getId(), reservation.getUserId(), reservation.getNotifyingUserMessage());
+            eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "User billed");
         }
 
-    }
-
-    public void executeSaga(Integer id, NotifiedUserEvent event) {
-        Reservation reservation = repository.findById(id).orElseThrow();
-        if (Boolean.TRUE.equals(event.getNotifyingUserFailed())) {
-            reservation.notifyingUserFailed();
-            eventSender.sendReverseBillingCommand(reservation.getId(), reservation.getBillId());
-            System.out.println("Notifying user failed");
-        } else {
-            reservation.userNotified();
-            eventSender.sendFinalisingReservationCommand(reservation.getId());
-        }
     }
 
     public void ownerConfirmsReservation(ConfirmingReservationCommand confirmingReservationCommand) {
         Reservation reservation = repository.findById(confirmingReservationCommand.getReservationId()).orElseThrow();
-        eventSender.sendConfirmingReservationCommand(confirmingReservationCommand.getReservationId(), confirmingReservationCommand.getOwnerId(), reservation.getCarId(), confirmingReservationCommand.getAccepted());
+        if(reservation.getStatus() == ReservationStatus.CONFIRMING_RESERVATION) {
+            eventSender.sendConfirmingReservationCommand(confirmingReservationCommand.getReservationId(), confirmingReservationCommand.getOwnerEmail(), reservation.getCarId(), confirmingReservationCommand.getAccepted());
+        } else eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Reservation can't be confirmed at this moment (status: " + reservation.getStatus() + ")");
     }
 }

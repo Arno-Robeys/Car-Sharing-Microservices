@@ -28,17 +28,20 @@ public class MessageListener {
     @RabbitListener(queues = "q.user-service.validate-user")
     public void validateUser(ValidateUserCommand command) {
         LOGGER.info("Validating user command: " + command);
-        User user = userService.validateUser(command.getUserId());
 
         ValidatedUserEvent event = new ValidatedUserEvent();
         event.setReservationId(command.getReservationId());
-        event.setUserId(command.getUserId());
+        event.setEmail(command.getEmail());
+        event.setUserValid(false);
+
+        User user = userService.validateUser(command.getEmail());
         if(user != null) {
             event.setUsername(user.getUsername());
             event.setEmail(user.getEmail());
             event.setUserValid(true);
         }
 
+        LOGGER.info("Sending event: " + event);
         this.rabbitTemplate.convertAndSend("x.validated-user", "validated-user.reservation-service", event);
     }
 }

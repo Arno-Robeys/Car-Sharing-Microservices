@@ -1,5 +1,6 @@
 package be.ucll.reservationservice.domain;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -9,31 +10,31 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private Integer userId;
+
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
+    private String userEmail;
     private Integer carId;
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
     private Integer billId;
     private OffsetDateTime billDueDate;
     private BigDecimal billAmount;
-    private String notifyingUserMessage;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
     public Reservation(
-            Integer userId,
+            String userEmail,
             Integer carId,
             OffsetDateTime startDate,
             OffsetDateTime endDate
     ) {
-        this.userId = userId;
+        this.userEmail = userEmail;
         this.carId = carId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.billAmount = BigDecimal.ZERO;
         this.billDueDate = OffsetDateTime.now().plusDays(30);
-        this.notifyingUserMessage = "notifyingUserMessage";
         this.status = ReservationStatus.REGISTERED;
     }
 
@@ -47,8 +48,8 @@ public class Reservation {
     public Integer getCarId() {
         return carId;
     }
-    public Integer getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
     public OffsetDateTime getStartDate() {
         return startDate;
@@ -64,9 +65,6 @@ public class Reservation {
     }
     public Integer getBillId() {
         return billId;
-    }
-    public String getNotifyingUserMessage() {
-        return notifyingUserMessage;
     }
     public ReservationStatus getStatus() {
         return status;

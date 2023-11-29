@@ -13,7 +13,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User validateUser(Integer userId) {
-        return userRepository.findById(userId).orElse(null);
+    public User validateUser(String email) {
+        return userRepository.findUserByEmail(email).orElse(null);
     }
 }

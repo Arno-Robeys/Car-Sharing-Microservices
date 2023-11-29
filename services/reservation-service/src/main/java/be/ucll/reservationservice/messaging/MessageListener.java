@@ -36,24 +36,12 @@ public class MessageListener {
     @RabbitListener(queues = {"q.validated-user.reservation-service"})
     public void onUserValidated(ValidatedUserEvent event) {
         LOGGER.info("Receiving event: " + event);
-        this.saga.executeSage(event.getReservationId(), event);
+       this.saga.executeSage(event.getReservationId(), event);
     }
 
     @RabbitListener(queues = {"q.confirmed-reservation.reservation-service"})
     public void onConfirmedReservation(ConfirmOwnerEvent event) {
         LOGGER.info("Receiving event: " + event);
-    }
-
-    //TODO: make queue for this in RabbitMqConfig
-    /*@RabbitListener(queues = {"q.confirmed-reservation.reservation-service"})
-    public void onConfirmedReservation(ConfirmedReservationEvent event) {
-        LOGGER.info("Receiving event: " + event);
         this.saga.executeSaga(event.getReservationId(), event);
     }
-
-    @RabbitListener(queues = {"q.billed-user.reservation-service"})
-    public void onBilledUser(BilledUserEvent event) {
-        LOGGER.info("Receiving event: " + event);
-        this.saga.executeSaga(event.getReservationId(), event);
-    }*/
 }

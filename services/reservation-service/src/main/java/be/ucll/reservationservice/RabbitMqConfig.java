@@ -79,6 +79,11 @@ public class RabbitMqConfig {
                 new Binding("q.confirmed-reservation.reservation-service", Binding.DestinationType.QUEUE, "x.confirmed-reservation", "confirmed-reservation.reservation-service", null));
     }
 
+    @Bean
+    public Declarables createSendEmailNotificationQueue(){
+        return new Declarables(new Queue("q.notification-service.send-email-notification"));
+    }
+
     /*@Bean
     public Declarables createConfirmedReservationQueue(){
         return new Declarables(new Queue("q.billing-service.billing-user"));

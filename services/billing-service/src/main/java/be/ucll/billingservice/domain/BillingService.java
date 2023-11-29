@@ -9,14 +9,8 @@ import java.time.OffsetDateTime;
 @Service
 @Transactional
 public class BillingService {
-    /*
-    private Integer carId;
-    private Integer reservationId;
-    private Double amount;
-    private LocalDateTime issuedDate;
-    private LocalDateTime dueDate;
-     */
-    public Billing billingUser(Integer userId, Integer reservationId, BigDecimal amount, OffsetDateTime dueDate) {
-        return new Billing(userId, reservationId, amount, OffsetDateTime.now(), dueDate, Status.UNPAID);
+
+    public Billing billingUser(String email, Integer reservationId, BigDecimal amount, OffsetDateTime dueDate) {
+        return new Billing(email, reservationId, amount, OffsetDateTime.now(), dueDate, Status.UNPAID);
     }
 }

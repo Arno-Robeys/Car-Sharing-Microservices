@@ -103,8 +103,9 @@ components:
       properties:
         reservationId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         carId:
           type: integer
         startTime:
@@ -118,15 +119,17 @@ components:
       properties:
         reservationId:
           type: integer
-        ownerId:
-          type: integer
+        ownerEmail:
+          type: string
+          format: email
         accepted:
           type: boolean
     ReservationCommand:
       type: object
       properties:
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         carId:
           type: integer
         startTime:
@@ -147,8 +150,9 @@ components:
       properties:
         reservationId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         carId:
           type: integer
         startTime:

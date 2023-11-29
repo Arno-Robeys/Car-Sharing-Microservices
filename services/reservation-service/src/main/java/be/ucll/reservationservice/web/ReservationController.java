@@ -24,10 +24,6 @@ public class ReservationController implements ReservationApiDelegate {
         response.reservationId(reservationService.registerRequest(apiReservationRequest));
         return ResponseEntity.ok(response);
     }
-    @Override
-    public ResponseEntity<ApiReservation> getReservationById(Integer reservationId) {
-        return null;
-    }
 
    @Override
     public ResponseEntity<ApiReservation> confirmReservation(ConfirmingReservationCommand confirmingReservationCommand) {

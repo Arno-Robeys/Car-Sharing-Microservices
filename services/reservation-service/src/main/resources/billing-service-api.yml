@@ -31,34 +31,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-    post:
-      summary: Generate a bill for a reservation
-      description: Creates a bill for a specific car reservation after it has passed.
-      operationId: UpdateBillById
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-          description: ID of the bill to retrieve
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BillCommand'
-      responses:
-        '201':
-          description: Bill successfully created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiBill'
-        '400':
-          description: Invalid reservation data
-        '500':
-          description: Internal server error
 
 components:
   schemas:
@@ -67,8 +39,9 @@ components:
       properties:
         billId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         reservationId:
           type: integer
     BilledUserEvent:
@@ -76,8 +49,9 @@ components:
       properties:
         billId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         reservationId:
           type: integer
         billingUserFailed:
@@ -87,8 +61,9 @@ components:
       properties:
         reservationId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         dueDate:
           type: string
           format: date-time
@@ -99,8 +74,9 @@ components:
       properties:
         billId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         carId:
           type: integer
         reservationId:

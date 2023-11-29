@@ -7,7 +7,7 @@ paths:
   /api/v1/cars:
     post:
       tags:
-        - Car Listing
+        - CarListing
       summary: Add a new car listing
       description: Adds a new car listing to the platform
       operationId: newCarListing
@@ -38,33 +38,9 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 
   /api/v1/cars/{carId}:
-    get:
-      tags:
-        - Car Listing
-      summary: Get car listing by ID
-      description: Retrieve car details by car ID
-      operationId: GetCarById
-      parameters:
-        - in: path
-          name: carId
-          schema:
-            type: integer
-          required: true
-          description: ID of the car listing to retrieve
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiCar'
-        '404':
-          description: Car listing not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
     put:
+      tags:
+        - CarListing
       description: Modify the details of a specific car listing
       operationId: UpdateCarById
       parameters:
@@ -162,8 +138,9 @@ components:
           type: integer
         carId:
           type: integer
-        ownerId:
-          type: integer
+        ownerEmail:
+          type: string
+          format: email
         available:
           type: boolean
     ReserveCarCommand:
@@ -180,17 +157,21 @@ components:
           type: integer
         carId:
           type: integer
-        ownerId:
-          type: integer
+        ownerEmail:
+          type: string
+          format: email
         accepted:
           type: boolean
     ConfirmOwnerEvent:
       type: object
       properties:
+        reservationId:
+          type: integer
         carId:
           type: integer
-        ownerId:
-          type: integer
+        ownerEmail:
+          type: string
+          format: email
         accepted:
           type: boolean
         isOwner:
@@ -198,8 +179,9 @@ components:
     CarListingCommand:
       type: object
       properties:
-        ownerId:
-          type: integer
+        ownerEmail:
+          type: string
+          format: email
         carModel:
           type: string
         year:
@@ -216,8 +198,9 @@ components:
       properties:
         carId:
           type: integer
-        ownerId:
-          type: integer
+        ownerEmail:
+          type: string
+          format: email
         carModel:
           type: string
         year:

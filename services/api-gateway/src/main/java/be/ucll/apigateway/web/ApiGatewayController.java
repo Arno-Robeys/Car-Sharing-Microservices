@@ -1,16 +1,66 @@
 package be.ucll.apigateway.web;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
+import be.ucll.apigateway.api.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import be.ucll.apigateway.api.TestApiDelegate;
+import be.ucll.apigateway.api.ApiGatewayApiDelegate;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+
 
 @Component
-public class ApiGatewayController implements TestApiDelegate {
+public class ApiGatewayController implements ApiGatewayApiDelegate {
+
+    private final RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
 
     @Override
-    public ResponseEntity<Void> test()
-    {
-        //Met deze methode kan je testen of de api-gateway werkt
-        return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+    public ResponseEntity<Void> confirmReservation(ConfirmingReservationCommand confirmingReservationCommand) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<ConfirmingReservationCommand> requestEntity = new HttpEntity<>(confirmingReservationCommand, headers);
+        try {
+            restTemplate.exchange("http://localhost:8082/api/v1/reservations/confirm", HttpMethod.PATCH, requestEntity, Void.class);
+        } catch (RestClientException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ApiReservationResponse> createReservation(ReservationCommand reservationCommand) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<ReservationCommand> requestEntity = new HttpEntity<>(reservationCommand, headers);
+        ResponseEntity<ApiReservationResponse> responseEntity;
+        try {
+            responseEntity = restTemplate.exchange("http://localhost:8082/api/v1/reservations", HttpMethod.POST, requestEntity, ApiReservationResponse.class);
+        } catch (RestClientException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return responseEntity;
+    }
+
+    @Override
+    public ResponseEntity<ApiCar> newCarListing(CarListingCommand carListingCommand) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<CarListingCommand> requestEntity = new HttpEntity<>(carListingCommand, headers);
+        ResponseEntity<ApiCar> responseEntity;
+        try {
+            responseEntity = restTemplate.exchange("http://localhost:8081/api/v1/cars", HttpMethod.POST, requestEntity, ApiCar.class);
+        } catch (RestClientException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return responseEntity;
     }
 }

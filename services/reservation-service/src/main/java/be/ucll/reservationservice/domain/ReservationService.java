@@ -19,7 +19,7 @@ public class ReservationService {
     }
 
     public Integer registerRequest(ReservationCommand apiReservationRequest) {
-        var reservation = new Reservation(apiReservationRequest.getUserId(), apiReservationRequest.getCarId(), apiReservationRequest.getStartTime(), apiReservationRequest.getEndTime());
+        var reservation = new Reservation(apiReservationRequest.getUserEmail(), apiReservationRequest.getCarId(), apiReservationRequest.getStartTime(), apiReservationRequest.getEndTime());
 
         reservation = repository.save(reservation);
         requestSaga.executeSaga(reservation);

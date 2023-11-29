@@ -1,18 +1,23 @@
 package be.ucll.carservice.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+
+import java.math.BigDecimal;
 
 @Entity
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private Integer ownerId;
+
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
+    private String ownerEmail;
     private String carModel;
     @Column(name = "\"year\"")
     private Integer year;
     private String location;
-    private Double price;
+    private BigDecimal price;
     private Boolean available;
 
     public Integer getId() {
@@ -23,12 +28,12 @@ public class Car {
         this.id = id;
     }
 
-    public Integer getOwnerId() {
-        return ownerId;
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 
     public String getCarModel() {
@@ -55,11 +60,11 @@ public class Car {
         this.location = location;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
