@@ -52,12 +52,13 @@ public class RabbitMqMessageSender {
         sendToQueue("q.car-service.confirm-reservation-check-owner", command);
     }
 
-    public void sendBillingUserCommand(Integer reservationId, String email, BigDecimal amount, OffsetDateTime dueDate) {
+    public void sendBillingUserCommand(Integer reservationId, String email, BigDecimal amount, OffsetDateTime dueDate, Integer amountDays) {
         var command = new BillCommand();
         command.setReservationId(reservationId);
         command.setUserEmail(email);
         command.setAmount(amount);
         command.setDueDate(dueDate);
+        command.setAmountDays(amountDays);
         sendToQueue("q.billing-service.billing-user", command);
     }
 

@@ -80,12 +80,20 @@ public class RabbitMqConfig {
     }
 
     @Bean
+    public Declarables createBillingUserQueue(){
+        return new Declarables(new Queue("q.billing-service.billing-user"));
+    }
+
+    @Bean
+    public Declarables createBillingUserExchange(){
+        return new Declarables(
+                new FanoutExchange("x.billed-user"),
+                new Queue("q.billed-user.reservation-service"),
+                new Binding("q.billed-user.reservation-service", Binding.DestinationType.QUEUE, "x.billed-user", "billed-user.reservation-service", null));
+    }
+
+    @Bean
     public Declarables createSendEmailNotificationQueue(){
         return new Declarables(new Queue("q.notification-service.send-email-notification"));
     }
-
-    /*@Bean
-    public Declarables createConfirmedReservationQueue(){
-        return new Declarables(new Queue("q.billing-service.billing-user"));
-    }*/
 }

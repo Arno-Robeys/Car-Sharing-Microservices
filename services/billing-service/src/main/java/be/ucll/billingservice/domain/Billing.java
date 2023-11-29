@@ -28,22 +28,59 @@ public class Billing {
      */
     private Status status;
 
-    public Billing(
-            String userEmail,
-            Integer reservationId,
-            BigDecimal amount,
-            OffsetDateTime issuedDate,
-            OffsetDateTime dueDate,
-            Status status
-    ) {
-        this.userEmail = userEmail;
-        this.reservationId = reservationId;
-        this.amount = amount;
-        this.issuedDate = issuedDate;
-        this.dueDate = dueDate;
-        this.status = status;
+    public Integer getId() {
+        return id;
     }
-    public Billing() {
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public Integer getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(Integer reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public OffsetDateTime getIssuedDate() {
+        return issuedDate;
+    }
+
+    public void setIssuedDate(OffsetDateTime issuedDate) {
+        this.issuedDate = issuedDate;
+    }
+
+    public OffsetDateTime getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(OffsetDateTime dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

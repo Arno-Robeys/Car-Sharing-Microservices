@@ -34,7 +34,7 @@ public class Reservation {
         this.startDate = startDate;
         this.endDate = endDate;
         this.billAmount = BigDecimal.ZERO;
-        this.billDueDate = OffsetDateTime.now().plusDays(30);
+        this.billDueDate = startDate.minusHours(2);
         this.status = ReservationStatus.REGISTERED;
     }
 

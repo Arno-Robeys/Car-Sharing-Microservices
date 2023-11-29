@@ -52,10 +52,10 @@ components:
         userEmail:
           type: string
           format: email
+        billAmount:
+          type: number
         reservationId:
           type: integer
-        billingUserFailed:
-          type: boolean
     BillCommand:
       type: object
       properties:
@@ -69,6 +69,8 @@ components:
           format: date-time
         amount:
           type: number
+        amountDays:
+          type: integer
     ApiBill:
       type: object
       properties:

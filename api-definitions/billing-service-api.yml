@@ -39,8 +39,9 @@ components:
       properties:
         billId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         reservationId:
           type: integer
     BilledUserEvent:
@@ -48,31 +49,36 @@ components:
       properties:
         billId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
+        billAmount:
+          type: number
         reservationId:
           type: integer
-        billingUserFailed:
-          type: boolean
     BillCommand:
       type: object
       properties:
         reservationId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         dueDate:
           type: string
           format: date-time
         amount:
           type: number
+        amountDays:
+          type: integer
     ApiBill:
       type: object
       properties:
         billId:
           type: integer
-        userId:
-          type: integer
+        userEmail:
+          type: string
+          format: email
         carId:
           type: integer
         reservationId:

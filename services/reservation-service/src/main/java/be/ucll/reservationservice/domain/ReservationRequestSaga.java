@@ -7,6 +7,7 @@ import be.ucll.reservationservice.client.user.api.model.ValidatedUserEvent;
 import be.ucll.reservationservice.messaging.RabbitMqMessageSender;
 import org.springframework.stereotype.Component;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Component
@@ -57,25 +58,21 @@ public class ReservationRequestSaga {
 
     public void executeSaga(Integer id, ConfirmOwnerEvent event) {
         Reservation reservation = repository.findById(id).orElseThrow();
-        if (Boolean.TRUE.equals(event.getAccepted())) {
-            reservation.confirmingReservation();
-            eventSender.sendBillingUserCommand(reservation.getId(), reservation.getUserEmail(), reservation.getBillAmount(), reservation.getBillDueDate());
-        } else {
-            reservation.ownerDeclines();
-            eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Owner declined reservation");
-        }
+        if(Boolean.TRUE.equals(event.getIsOwner())) {
+            if (Boolean.TRUE.equals(event.getAccepted())) {
+                reservation.confirmingReservation();
+                Integer amountDays = 1+ (Math.toIntExact(ChronoUnit.DAYS.between(reservation.getStartDate(), reservation.getEndDate())));
+                eventSender.sendBillingUserCommand(reservation.getId(), reservation.getUserEmail(), event.getPrice(), reservation.getBillDueDate(), amountDays);
+            } else {
+                reservation.ownerDeclines();
+                eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Owner declined reservation");
+            }
+        } else eventSender.sendEmailNotificationCommand(event.getOwnerEmail(), "You are not the owner of this car");
     }
 
     public void executeSaga(Integer id, BilledUserEvent event) {
         Reservation reservation = repository.findById(id).orElseThrow();
-        if (Boolean.TRUE.equals(event.getBillingUserFailed())) {
-            reservation.billingUserFailed();
-            eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Billing user failed");
-        } else {
-            reservation.userBilled();
-            eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "User billed");
-        }
-
+        eventSender.sendEmailNotificationCommand(event.getUserEmail(), "Your bill is " + event.getBillAmount() + " and is due on " + reservation.getBillDueDate());
     }
 
     public void ownerConfirmsReservation(ConfirmingReservationCommand confirmingReservationCommand) {

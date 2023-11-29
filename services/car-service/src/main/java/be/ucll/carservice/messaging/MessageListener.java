@@ -45,13 +45,14 @@ public class MessageListener {
     public void receiveConfirmingReservationCommand(ConfirmOwnerCommand command) {
         LOGGER.info("Received command: " + command);
 
-        String ownerEmail = carService.getOwnerEmail(command.getCarId());
+        Car car = carService.getCarById(command.getCarId());
         ConfirmOwnerEvent event = new ConfirmOwnerEvent();
         event.setReservationId(command.getReservationId());
         event.setOwnerEmail(command.getOwnerEmail());
         event.setCarId(command.getCarId());
         event.setAccepted(command.getAccepted());
-        event.setIsOwner(command.getOwnerEmail().equals(ownerEmail));
+        event.setIsOwner(command.getOwnerEmail().equals(car.getOwnerEmail()));
+        event.setPrice(car.getPrice());
 
         this.rabbitTemplate.convertAndSend("x.confirmed-reservation", "", event);
     }

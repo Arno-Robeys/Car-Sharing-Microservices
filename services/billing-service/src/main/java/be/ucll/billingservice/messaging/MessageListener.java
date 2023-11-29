@@ -27,8 +27,12 @@ public class MessageListener {
     public void onBillingUser(BillCommand command) {
         LOGGER.info("Received command: " + command);
 
-        Billing billing = billingService.billingUser(command.getUserEmail(), command.getReservationId(), command.getAmount(), command.getDueDate());
+        Billing billing = billingService.billingUser(command.getUserEmail(), command.getReservationId(), command.getAmount(), command.getDueDate(), command.getAmountDays());
         BilledUserEvent event = new BilledUserEvent();
+        event.setReservationId(command.getReservationId());
+        event.setBillId(billing.getId());
+        event.setUserEmail(command.getUserEmail());
+        event.setBillAmount(billing.getAmount());
 
         LOGGER.info("Sending event: " + event);
         this.rabbitTemplate.convertAndSend("x.billed-user", "", event);

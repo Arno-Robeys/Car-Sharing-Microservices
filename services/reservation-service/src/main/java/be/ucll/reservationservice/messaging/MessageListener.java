@@ -1,4 +1,5 @@
 package be.ucll.reservationservice.messaging;
+import be.ucll.reservationservice.client.billing.api.model.BilledUserEvent;
 import be.ucll.reservationservice.client.car.api.model.ConfirmOwnerEvent;
 import be.ucll.reservationservice.client.user.api.model.ValidatedUserEvent;
 import be.ucll.reservationservice.client.car.api.model.ReservedCarEvent;
@@ -41,6 +42,12 @@ public class MessageListener {
 
     @RabbitListener(queues = {"q.confirmed-reservation.reservation-service"})
     public void onConfirmedReservation(ConfirmOwnerEvent event) {
+        LOGGER.info("Receiving event: " + event);
+        this.saga.executeSaga(event.getReservationId(), event);
+    }
+
+    @RabbitListener(queues = {"q.billed-user.reservation-service"})
+    public void onBilledUser(BilledUserEvent event) {
         LOGGER.info("Receiving event: " + event);
         this.saga.executeSaga(event.getReservationId(), event);
     }
