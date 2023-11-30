@@ -60,7 +60,7 @@ public class ReservationRequestSaga {
         Reservation reservation = repository.findById(id).orElseThrow();
         if(Boolean.TRUE.equals(event.getIsOwner())) {
             if (Boolean.TRUE.equals(event.getAccepted())) {
-                reservation.confirmingReservation();
+                reservation.reservationConfirmed();
                 Integer amountDays = 1+ (Math.toIntExact(ChronoUnit.DAYS.between(reservation.getStartDate(), reservation.getEndDate())));
                 eventSender.sendBillingUserCommand(reservation.getId(), reservation.getUserEmail(), event.getPrice(), reservation.getBillDueDate(), amountDays);
             } else {
@@ -72,6 +72,7 @@ public class ReservationRequestSaga {
 
     public void executeSaga(Integer id, BilledUserEvent event) {
         Reservation reservation = repository.findById(id).orElseThrow();
+        reservation.completed();
         eventSender.sendEmailNotificationCommand(event.getUserEmail(), "Your bill is " + event.getBillAmount() + " and is due on " + reservation.getBillDueDate());
     }
 

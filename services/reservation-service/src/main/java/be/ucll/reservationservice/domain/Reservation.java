@@ -77,7 +77,6 @@ public class Reservation {
         RESERVING_CAR,
         CONFIRMING_RESERVATION,
         BILLING_USER,
-        NOTIFYING_USER,
      */
     public void registered() {
         this.status = ReservationStatus.REGISTERED;
@@ -94,12 +93,6 @@ public class Reservation {
     public void reservationConfirmed() {
         this.status = ReservationStatus.BILLING_USER;
     }
-    public void userBilled(){
-        this.status = ReservationStatus.NOTIFYING_USER;
-    }
-    public void userNotified(){
-        this.status = ReservationStatus.COMPLETED;
-    }
     /*
         Failure States:
         NO_VALID_USER,
@@ -107,7 +100,6 @@ public class Reservation {
         DOUBLE_BOOKING,
         OWNER_DECLINES,
         BILLING_USER_FAILED,
-        NOTIFYING_USER_FAILED,
      */
     public void userNotValid() {
         this.status = ReservationStatus.NO_VALID_USER;
@@ -121,12 +113,6 @@ public class Reservation {
     public void ownerDeclines() {
         this.status = ReservationStatus.OWNER_DECLINES;
     }
-    public void billingUserFailed() {
-        this.status = ReservationStatus.BILLING_USER_FAILED;
-    }
-    public void notifyingUserFailed() {
-        this.status = ReservationStatus.NOTIFYING_USER_FAILED;
-    }
     /*
         Final States:
         COMPLETED,
@@ -137,6 +123,10 @@ public class Reservation {
     */
     public void canceled() {
         this.status = ReservationStatus.CANCELED;
+    }
+
+    public void completed() {
+        this.status = ReservationStatus.COMPLETED;
     }
     public void listingRemoved(){
         this.status = ReservationStatus.LISTING_REMOVED;

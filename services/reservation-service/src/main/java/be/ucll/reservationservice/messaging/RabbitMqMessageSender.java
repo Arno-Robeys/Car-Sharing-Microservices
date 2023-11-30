@@ -40,7 +40,7 @@ public class RabbitMqMessageSender {
         var command = new ReserveCarCommand();
         command.reservationId(reservationId);
         command.carId(carId);
-        sendToQueue("q.reservation-service.reserving-car", command);
+        sendToQueue("q.car-service.reserving-car", command);
     }
 
     public void sendConfirmingReservationCommand(Integer reservationId, String email, Integer carId, Boolean accepted) {

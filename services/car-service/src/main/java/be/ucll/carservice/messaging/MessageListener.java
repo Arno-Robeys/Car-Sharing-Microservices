@@ -26,7 +26,7 @@ public class MessageListener {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    @RabbitListener(queues = "q.reservation-service.reserving-car")
+    @RabbitListener(queues = "q.car-service.reserving-car")
     public void receiveReservingCarCommand(ReserveCarCommand command) {
         LOGGER.info("Received command: " + command);
         Car car = carService.reserveCar(command.getCarId());

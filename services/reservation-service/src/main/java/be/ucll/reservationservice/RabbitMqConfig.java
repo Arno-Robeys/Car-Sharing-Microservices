@@ -55,7 +55,7 @@ public class RabbitMqConfig {
 
     @Bean
     public Declarables createReservingCarQueue(){
-        return new Declarables(new Queue("q.reservation-service.reserving-car"));
+        return new Declarables(new Queue("q.car-service.reserving-car"));
     }
 
     @Bean
