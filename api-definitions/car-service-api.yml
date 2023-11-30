@@ -78,7 +78,7 @@ paths:
           name: carId
           required: true
           schema:
-            type: string
+            type: integer
         - in: query
           name: ownerEmail
           schema:

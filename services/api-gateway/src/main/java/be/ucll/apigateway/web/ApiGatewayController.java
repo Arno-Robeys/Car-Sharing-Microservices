@@ -62,7 +62,7 @@ public class ApiGatewayController implements ApiGatewayApiDelegate {
             responseEntity = modelMapper.map(circuitBreakerFactory.create("carlistingapi").run(() -> carListingApi.newCarListing(carListingCommandRequest)), ApiCar.class);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(responseEntity, HttpStatus.OK);
@@ -109,6 +109,23 @@ public class ApiGatewayController implements ApiGatewayApiDelegate {
             circuitBreakerFactory.create("reservationapi").run(() -> reservationApi.confirmReservation(confirmingReservationCommandRequest));
         } catch (RestClientException e) {
             System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteCarById(Integer carId, String ownerEmail) {
+        carListingApi.getApiClient().setBasePath(discoveryClient.getNextServerFromEureka("car-service", false).getHomePageUrl());
+
+        try {
+            circuitBreakerFactory.create("carlistingapi").run(() -> {carListingApi.deleteCarById(carId, ownerEmail); return null;});
+        } catch (RestClientException e) {
+            System.out.println(e.getMessage());
+            if(e.getMessage().contains("400")) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

@@ -52,4 +52,13 @@ public class CarService {
     public List<Car> searchCar(String location, String carModel, BigDecimal price) {
         return repository.findAllByInfo(location, carModel, price);
     }
+
+    public void deleteCarById(Integer carId, String ownerEmail) {
+        Car car = repository.findById(carId).orElseThrow();
+        if(car.getOwnerEmail().equals(ownerEmail)) {
+            repository.delete(car);
+        } else {
+            throw new IllegalArgumentException("Owner email does not match");
+        }
+    }
 }

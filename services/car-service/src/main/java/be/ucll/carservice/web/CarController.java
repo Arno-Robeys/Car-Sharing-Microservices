@@ -45,6 +45,16 @@ public class CarController implements CarListingApiDelegate {
         return ResponseEntity.ok(generateResponse(car));
     }
 
+    @Override
+    public ResponseEntity<Void> deleteCarById(Integer carId, String ownerEmail) {
+        try {
+            carService.deleteCarById(carId, ownerEmail);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
     public ApiCar generateResponse(Car car) {
         ApiCar apiCar = new ApiCar();
 

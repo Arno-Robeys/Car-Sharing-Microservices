@@ -171,3 +171,28 @@ paths:
             application/json:
               schema:
                 $ref: 'car-service-api.yml#/components/schemas/ApiError'
+    delete:
+      tags:
+        - ApiGateway
+      description: Remove a car listing permanently from the platform
+      operationId: DeleteCarById
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: ownerEmail
+          schema:
+            type: string
+            format: email
+      responses:
+        '204':
+          description: Car listing removed
+        '404':
+          description: Car listing not found
+          content:
+            application/json:
+              schema:
+                $ref: 'car-service-api.yml#/components/schemas/ApiError'
