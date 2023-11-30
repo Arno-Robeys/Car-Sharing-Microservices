@@ -38,7 +38,7 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 
   /api/v1/cars/{carId}:
-    patch:
+    put:
       tags:
         - CarListing
       description: Change if the car listing is available or not
@@ -79,6 +79,11 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: ownerEmail
+          schema:
+            type: string
+            format: email
       responses:
         '204':
           description: Car listing removed

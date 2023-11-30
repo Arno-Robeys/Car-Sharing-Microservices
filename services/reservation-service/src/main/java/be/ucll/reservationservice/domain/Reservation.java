@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Entity
 public class Reservation {
@@ -70,6 +71,15 @@ public class Reservation {
         return status;
     }
 
+    public List<ReservationStatus> getFailureStates() {
+        return List.of(
+                ReservationStatus.NO_VALID_USER,
+                ReservationStatus.NO_CAR,
+                ReservationStatus.DOUBLE_BOOKING,
+                ReservationStatus.OWNER_DECLINES
+        );
+    }
+
     /*
         Happy Flow:
         REGISTERED,
@@ -99,7 +109,6 @@ public class Reservation {
         NO_CAR,
         DOUBLE_BOOKING,
         OWNER_DECLINES,
-        BILLING_USER_FAILED,
      */
     public void userNotValid() {
         this.status = ReservationStatus.NO_VALID_USER;

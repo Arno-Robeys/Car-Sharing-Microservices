@@ -42,7 +42,7 @@ public class ReservationRequestSaga {
         Reservation reservation = repository.findById(id).orElseThrow();
 
         if(Boolean.TRUE.equals(event.getAvailable())) {
-            List<Reservation> reservations = repository.getReservationsForCarOverlapping(reservation.getId(), event.getCarId(), reservation.getStartDate(), reservation.getEndDate());
+            List<Reservation> reservations = repository.getReservationsForCarOverlapping(reservation.getId(), event.getCarId(), reservation.getStartDate(), reservation.getEndDate(), reservation.getFailureStates());
             if(reservations.isEmpty()) {
                 reservation.confirmingReservation();
                 eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Owner needs to confirm reservation");
@@ -78,8 +78,10 @@ public class ReservationRequestSaga {
     }
 
     public void ownerConfirmsReservation(ConfirmingReservationCommand confirmingReservationCommand) {
-        Reservation reservation = repository.findById(confirmingReservationCommand.getReservationId()).orElseThrow();
-        if(reservation.getStatus() == ReservationStatus.CONFIRMING_RESERVATION) {
+        Reservation reservation = repository.findById(confirmingReservationCommand.getReservationId()).orElse(null);
+        if(reservation == null) {
+            eventSender.sendEmailNotificationCommand(confirmingReservationCommand.getOwnerEmail(), "Reservation doesn't exist");
+        }else if(reservation.getStatus() == ReservationStatus.CONFIRMING_RESERVATION) {
             eventSender.sendConfirmingReservationCommand(confirmingReservationCommand.getReservationId(), confirmingReservationCommand.getOwnerEmail(), reservation.getCarId(), confirmingReservationCommand.getAccepted());
         } else eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Reservation can't be confirmed at this moment (status: " + reservation.getStatus() + ")");
     }
