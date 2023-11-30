@@ -1,7 +1,6 @@
 package be.ucll.apigateway.web;
 
 import be.ucll.apigateway.api.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;

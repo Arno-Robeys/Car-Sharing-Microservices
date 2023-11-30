@@ -46,6 +46,7 @@ public class ReservationRequestSaga {
             if(reservations.isEmpty()) {
                 reservation.confirmingReservation();
                 eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "Owner needs to confirm reservation");
+                eventSender.sendEmailNotificationCommand(event.getOwnerEmail(), "You have a reservation request for your car " + event.getCarId() + " from " + reservation.getStartDate() + " to " + reservation.getEndDate() + " for " + reservation.getUserEmail() + ". Please confirm or decline the reservation with the following id: " + reservation.getId());
             } else {
                 reservation.doubleBooking();
                 eventSender.sendEmailNotificationCommand(reservation.getUserEmail(), "This car is already booked");

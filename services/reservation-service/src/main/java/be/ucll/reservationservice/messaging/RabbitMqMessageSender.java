@@ -38,17 +38,17 @@ public class RabbitMqMessageSender {
 
     public void sendReservingCarCommand(Integer reservationId, Integer carId) {
         var command = new ReserveCarCommand();
-        command.reservationId(reservationId);
-        command.carId(carId);
+        command.setReservationId(reservationId);
+        command.setCarId(carId);
         sendToQueue("q.car-service.reserving-car", command);
     }
 
     public void sendConfirmingReservationCommand(Integer reservationId, String email, Integer carId, Boolean accepted) {
         var command = new ConfirmOwnerCommand();
-        command.reservationId(reservationId);
-        command.ownerEmail(email);
-        command.carId(carId);
-        command.accepted(accepted);
+        command.setReservationId(reservationId);
+        command.setOwnerEmail(email);
+        command.setCarId(carId);
+        command.setAccepted(accepted);
         sendToQueue("q.car-service.confirm-reservation-check-owner", command);
     }
 
@@ -62,23 +62,10 @@ public class RabbitMqMessageSender {
         sendToQueue("q.billing-service.billing-user", command);
     }
 
-    public void sendReverseBillingCommand(Integer reservationId, Integer billId) {
-        var command = new ReverseBillingCommand();
-        command.reservationId(reservationId);
-        command.billId(billId);
-        sendToQueue("q.billing-service.reverse-billing", command);
-    }
-
-    public void sendFinalisingReservationCommand(Integer reservationId) {
-        var command = new FinalisingReservationCommand();
-        command.reservationId(reservationId);
-        sendToQueue("q.reservation-service.finalising-reservation", command);
-    }
-
     public void sendEmailNotificationCommand(String recipient, String message) {
         var command = new SendEmailCommand();
-        command.recipient(recipient);
-        command.message(message);
+        command.setRecipient(recipient);
+        command.setMessage(message);
         sendToQueue("q.notification-service.send-email-notification", command);
     }
 }

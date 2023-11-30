@@ -1,6 +1,5 @@
 package be.ucll.carservice.domain;
 
-import be.ucll.carservice.api.model.ApiCar;
 import be.ucll.carservice.api.model.CarListingCommand;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

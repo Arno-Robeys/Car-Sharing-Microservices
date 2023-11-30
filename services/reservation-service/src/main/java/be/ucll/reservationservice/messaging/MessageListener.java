@@ -19,14 +19,10 @@ import org.springframework.stereotype.Component;
 public class MessageListener {
     private final static Logger LOGGER = LoggerFactory.getLogger(MessageListener.class);
     private final ReservationRequestSaga saga;
-    private final RabbitTemplate rabbitTemplate;
-    private final ReservationService reservationService;
 
     @Autowired
     public MessageListener(ReservationRequestSaga saga , ReservationService reservationService, RabbitTemplate rabbitTemplate) {
         this.saga = saga;
-        this.reservationService = reservationService;
-        this.rabbitTemplate = rabbitTemplate;
     }
     @RabbitListener(queues = {"q.reserved-car.reservation-service"})
     public void onReservedCar(ReservedCarEvent event) {
