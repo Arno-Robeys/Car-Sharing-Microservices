@@ -30,34 +30,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-
-  /api/v1/reservations/{reservationId}:
-    get:
-      tags:
-        - Reservation
-      summary: Get reservation by ID
-      description: Retrieve reservation details by reservation ID
-      operationId: getReservationById
-      parameters:
-        - in: path
-          name: reservationId
-          schema:
-            type: integer
-          required: true
-          description: ID of the reservation to retrieve
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConfirmingReservationCommand'
-        '404':
-          description: Reservation not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
   /api/v1/reservations/confirm:
     put:
       tags:

@@ -3,34 +3,7 @@ info:
   title: Billing Service API
   description: API for Billing Service
   version: 1.0.0
-paths:
-  /api/v1/bills/{id}:
-    get:
-      tags:
-        - Billing
-      summary: Get bill by ID
-      description: Retrieve bill details by bill ID
-      operationId: GetBillById
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-          description: ID of the bill to retrieve
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiBill'
-        '404':
-          description: Bill not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
+paths: {}
 
 components:
   schemas:
