@@ -33,7 +33,7 @@ public class CarService {
 
 
     public Car reserveCar(Integer carId) {
-        return repository.findById(carId).orElseThrow();
+        return repository.findById(carId).orElse(null);
     }
 
     public Car getCarById(Integer carId) {

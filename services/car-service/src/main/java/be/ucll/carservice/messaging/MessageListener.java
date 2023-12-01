@@ -34,8 +34,12 @@ public class MessageListener {
         ReservedCarEvent event = new ReservedCarEvent();
         event.setReservationId(command.getReservationId());
         event.setCarId(command.getCarId());
-        event.setOwnerEmail(car.getOwnerEmail());
-        event.setAvailable(car.getAvailable());
+        if(car == null) {
+            event.setAvailable(false);
+        } else {
+            event.setAvailable(true);
+            event.setOwnerEmail(car.getOwnerEmail());
+        }
 
         LOGGER.info("Sending event: " + event);
         this.rabbitTemplate.convertAndSend("x.reserved-car", "", event);
